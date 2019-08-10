@@ -34,13 +34,19 @@ function phosReducer(state, action) {
             }
 
         case 'playOneSong':
-            return {
-                ...state,
-                currentPlaySong: action.payload.song,
-                url: `${NOTION_BASE}/signed/${encodeURIComponent(action.payload.song.file[0]).replace("s3.us-west", "s3-us-west")}`,
-                isReady: false,
-                playing: true
+
+            if (action.payload.song.file) {
+                return {
+                    ...state,
+                    currentPlaySong: action.payload.song,
+                    url: `${NOTION_BASE}/signed/${encodeURIComponent(action.payload.song.file[0]).replace("s3.us-west", "s3-us-west")}`,
+                    isReady: false,
+                    playing: true
+                }
+            } else {
+                return state
             }
+
         case 'changeVolume':
             return {
                 ...state,

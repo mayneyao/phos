@@ -7,12 +7,37 @@ import ControlCard from './Control/ControlCard'
 export default function Player() {
     const { state, dispatch } = React.useContext(PhosPlayerContext)
     const player = React.useRef(null);
-    const { playing, url, volume, repeat } = state
+    const { playing, url, volume, repeat, isBufferEnd } = state
     const onProgress = (playingState) => {
         dispatch({
             type: 'updatePlayingState',
             payload: {
                 playingState
+            }
+        })
+    }
+
+    const onEnded = () => {
+        dispatch({
+            type: 'next'
+        })
+    }
+    const onBuffer = () => {
+        dispatch({
+            type: 'setPlayerConfig',
+            payload: {
+                name: 'isBufferEnd',
+                value: false
+            }
+        })
+    }
+
+    const onBufferEnd = () => {
+        dispatch({
+            type: 'setPlayerConfig',
+            payload: {
+                name: 'isBufferEnd',
+                value: true
             }
         })
     }
@@ -30,6 +55,10 @@ export default function Player() {
             onProgress={onProgress}
             style={{ display: 'none' }}
             loop={repeat === 'one'}
+            onEnded={onEnded}
+            onBuffer={onBuffer}
+            onBufferEnd={onBufferEnd}
+        // progressInterval={0}
         />
         <ControlCard seekTo={seekTo} />
     </>

@@ -8,12 +8,20 @@ self.addEventListener('fetch', function (event) {
         return res || fetch(event.request).then(function (r) {
           caches.open('notion-data').then(function (cache) {
             cache.put(event.request, r);
-          });
+          }).catch(() => {
+            return new Response("oops, you are offline 😫")
+          })
           return r.clone();
         })
       })
     )
-  } else if (url.startsWith("https://s3.us-west-2.amazonaws.com/secure.notion-static.com/")) {
-    console.log(url)
+  } else {
+    event.respondWith(
+      fetch(event.request).then(res => {
+        return res
+      }).catch(() => {
+        return new Response("oops, you are offline 😫")
+      })
+    )
   }
 });

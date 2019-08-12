@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
         height: '100%',
-        backgroundColor: theme.palette.background.paper,
+        // backgroundColor: theme.palette.background.paper,
         margin: '0 auto'
     },
     col: {
@@ -69,6 +69,9 @@ export default function VirtualizedList() {
     }
     return (
         <div className={classes.root}>
+            <ListItem>
+                <ListItemText secondary={`歌单`} className={classes.col} />
+            </ListItem>
             <ListItem button onClick={
                 () => {
                     dispatch({
@@ -82,7 +85,7 @@ export default function VirtualizedList() {
                 <ListItemText primary={`全部歌曲`} className={classes.col} />
             </ListItem>
             <FixedSizeList
-                height={800}
+                height={500}
                 width='100%'
                 itemSize={46}
                 itemCount={playlists.length}

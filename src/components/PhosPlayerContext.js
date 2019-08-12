@@ -19,6 +19,7 @@ const initState = {
     muted: false, // 
     playing: false, // 是否播放
     isReady: false, // 当前歌曲是否加载完毕，可以播放
+    isBufferEnd: false, //当前播放的歌曲缓存是否结束
 
     shuffle: false,
     repeat: 'none', // ['none','one','list'] 不循环 | 单曲循环 | 列表循环
@@ -71,6 +72,7 @@ function phosReducer(state, action) {
                     url: `${NOTION_BASE}/signed/${encodeURIComponent(action.payload.song.file[0]).replace("s3.us-west", "s3-us-west")}`,
                     isReady: false,
                     playing: true,
+                    isBufferEnd: false,
                     currentPlaylist: _currentPlaylist
                 }
             } else {
@@ -143,7 +145,6 @@ function phosReducer(state, action) {
             } else {
                 return state
             }
-
     }
 }
 

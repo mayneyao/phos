@@ -8,22 +8,24 @@ import { PhosPlayerContext } from "./components/PhosPlayerContext";
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
+  root: {
+  },
   contentWrapper: {
     display: 'flex',
     height: '100%'
   },
   playlist: {
-    width: '30%',
+    width: '25%',
     height: '100%',
     // maxWidth: 400,
-    backgroundColor: theme.palette.background.paper,
+    // backgroundColor: theme.palette.background.paper,
     margin: '0 auto'
   },
   playlistContent: {
-    width: '70%',
+    width: '75%',
     height: '100%',
     // maxWidth: 1200,
-    backgroundColor: theme.palette.background.paper,
+    // backgroundColor: theme.palette.background.paper,
     margin: '0 auto'
   },
 }));
@@ -55,7 +57,7 @@ function PhosPlayer() {
   const classes = useStyles()
 
   return (
-    <div>
+    <div className={classes.root}>
       <div className={classes.contentWrapper}>
         <div className={classes.playlist}>
           <Playlist />

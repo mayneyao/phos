@@ -28,7 +28,7 @@ const seconds2Minutes = (time) => {
 
 export default function ProcessSlider(props) {
     const { state, dispatch } = React.useContext(PhosPlayerContext)
-    const { playingState: { playedSeconds, loadedSeconds } } = state
+    const { playingState: { playedSeconds, loadedSeconds }, isBufferEnd } = state
     const classes = useStyles()
 
     return <div className={classes.card}>
@@ -47,7 +47,7 @@ export default function ProcessSlider(props) {
             />
         </div>
         <span>
-            {loadedSeconds ? seconds2Minutes(loadedSeconds) : '00:00'}
+            {isBufferEnd ? seconds2Minutes(loadedSeconds) : '00:00'}
         </span>
     </div>
 }

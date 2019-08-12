@@ -16,12 +16,24 @@ import RepeatIcon from '@material-ui/icons/Repeat';
 import RepeatOneIcon from '@material-ui/icons/RepeatOne';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 
+
+import Notabase from 'notabase'
 import VolumeCard from './VolumeCard'
 import { PhosPlayerContext } from '../PhosPlayerContext'
-
 import ProcessSlider from './ProcessSlider'
 
 const PhosColor = '#38d4c9'
+
+let nb = new Notabase()
+
+const shuffleArray = (arr) => {
+  let i = arr.length;
+  while (i) {
+    let j = Math.floor(Math.random() * i--);
+    [arr[j], arr[i]] = [arr[i], arr[j]];
+  }
+}
+
 const useStyles = makeStyles(theme => ({
   card: {
     display: 'flex',
@@ -37,6 +49,19 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: theme.spacing(1),
     margin: '0 auto'
   },
+  songDetails: {
+    padding: 10,
+    display: 'flex',
+    width: '25%'
+  },
+  cover: {
+    width: 80,
+    height: '100%',
+    minWidth: 80
+  },
+  content: {
+    overflow: 'auto'
+  },
   controlBtn: {
     margin: '0 auto'
   },
@@ -47,10 +72,13 @@ const useStyles = makeStyles(theme => ({
   processSlider: {
     maxWidth: '100%',
   },
+  volumeWrapper: {
+    width: '20%',
+  },
   volume: {
     position: 'absolute',
     top: 'calc(50% - 20px)',
-    right: '5%'
+    right: '5%',
   },
   active: {
     color: PhosColor
@@ -61,13 +89,33 @@ export default function MediaControlCard(props) {
   const classes = useStyles()
   const theme = useTheme()
   const { state, dispatch } = React.useContext(PhosPlayerContext)
-  const { playing, repeat, shuffle } = state
+  const { playing, repeat, shuffle, currentPlaylist, currentPlaySong } = state
+  let _currentPlaylist = currentPlaylist
 
+  const getCover = () => {
+    if (currentPlaySong && currentPlaySong.title && currentPlaySong.album && currentPlaySong.album[0] && currentPlaySong.album[0].cover) {
+      return nb.parseImageUrl(currentPlaySong.album[0].cover[0], 100)
+    } else {
+      return ''
+    }
+  }
   return (
     <div>
       <Card className={classes.card}>
         <div className={classes.songDetails}>
-
+          <CardMedia
+            className={classes.cover}
+            image={currentPlaySong.title && getCover()}
+            title={currentPlaySong.title}
+          />
+          <CardContent className={classes.content}>
+            <Typography component="h5" variant="h5" noWrap>
+              {currentPlaySong.title}
+            </Typography>
+            <Typography variant="subtitle1" color="textSecondary" noWrap>
+              {currentPlaySong.artist && currentPlaySong.artist.map(a => a.name).join(",")}
+            </Typography>
+          </CardContent>
         </div>
 
         <div className={classes.playControls}>
@@ -81,6 +129,19 @@ export default function MediaControlCard(props) {
                     value: !shuffle
                   }
                 })
+
+                if (!shuffle) {
+                  // 打乱当前播放列表
+                  shuffleArray(_currentPlaylist)
+
+                  dispatch({
+                    type: 'setPlayerConfig',
+                    payload: {
+                      name: 'currentPlaylist',
+                      value: _currentPlaylist
+                    }
+                  })
+                }
               }
             }>
               <ShuffleIcon className={shuffle ? classes.active : ''} />
@@ -125,8 +186,10 @@ export default function MediaControlCard(props) {
           </div>
         </div>
 
-        <div className={classes.volume}>
-          <VolumeCard />
+        <div className={classes.volumeWrapper}>
+          <div className={classes.volume}>
+            <VolumeCard />
+          </div>
         </div>
       </Card>
     </div>

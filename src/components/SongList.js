@@ -5,6 +5,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { FixedSizeList } from 'react-window';
 import { PhosPlayerContext } from './PhosPlayerContext'
+import { Divider } from '@material-ui/core';
 
 
 const PhosColor = "#38d4c9"
@@ -13,7 +14,7 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         height: '100%',
         maxWidth: 1200,
-        backgroundColor: '#eee',
+        // backgroundColor: '#eee',
         margin: '0 auto'
     },
     col: {
@@ -74,17 +75,22 @@ export default function VirtualizedList() {
     }
 
     return (
+        <>
+            <ListItem>
+                <ListItemText secondary={`标题`} className={classes.col} />
+                <ListItemText secondary={`艺人`} className={classes.col} />
+                <ListItemText secondary={`专辑`} className={classes.col} />
+            </ListItem>
+            <FixedSizeList
+                height={500}
+                width='100%'
+                itemSize={46}
+                itemCount={songlist.length}
+                itemData={songlist}
+            >
 
-        <FixedSizeList
-            height={800}
-            width='100%'
-            itemSize={46}
-            itemCount={songlist.length}
-            itemData={songlist}
-        >
-
-            {Row}
-        </FixedSizeList>
-
+                {Row}
+            </FixedSizeList>
+        </>
     );
 }

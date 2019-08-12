@@ -65,6 +65,7 @@ function phosReducer(state, action) {
                     _currentPlaylist = songsCanPlay.filter(song => song.playlist && song.playlist.includes(playlistName))
                 }
 
+                document.title = `${action.payload.song.title} - ${action.payload.song.artist.map(a => a.name).join(",")}`
                 //
                 return {
                     ...state,
@@ -123,6 +124,7 @@ function phosReducer(state, action) {
                     prevSongIndex = (currentPlaylist.findIndex(i => i.title === currentPlaySong.title) - 1) % currentPlaylist.length
                 }
                 let prevSong = currentPlaylist[prevSongIndex]
+                document.title = `${prevSong.title} - ${prevSong.artist.map(a => a.name).join(",")}`
                 return {
                     ...state,
                     currentPlaySong: prevSong,
@@ -136,6 +138,7 @@ function phosReducer(state, action) {
             if (currentPlaySong.title) {
                 let nextSongIndex = (currentPlaylist.findIndex(s => s.title === currentPlaySong.title) + 1) % currentPlaylist.length
                 let nextSong = currentPlaylist[nextSongIndex]
+                document.title = `${nextSong.title} - ${nextSong.artist.map(a => a.name).join(",")}`
                 // fixme
                 return {
                     ...state,

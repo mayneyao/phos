@@ -27,7 +27,7 @@ function Row(props) {
     const { state, dispatch } = React.useContext(PhosPlayerContext)
     const { data, index, style } = props;
     let song = data[index]
-    let artists = song.artist.map(a => a.Name).join(",")
+    let artists = song.artist.map(a => a.name).join(",")
     const classes = useStyles();
     return (
         <ListItem button style={style} key={index} className={!song.file && classes.noSourceSong}
@@ -38,7 +38,7 @@ function Row(props) {
         >
             <ListItemText primary={`${song.title}`} className={classes.col} />
             <ListItemText primary={`${artists}`} className={classes.col} />
-            <ListItemText primary={`${song.album[0].Name}`} className={classes.col} />
+            <ListItemText primary={`${song.album[0].name}`} className={classes.col} />
         </ListItem>
     );
 }

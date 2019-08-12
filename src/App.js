@@ -8,6 +8,16 @@ import Settings from './components/Settings'
 
 import { PhosPlayerContext } from "./components/PhosPlayerContext";
 import { makeStyles } from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#38d4c9' }, // phos color
+  },
+});
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -71,19 +81,21 @@ function PhosPlayer() {
   const classes = useStyles()
 
   return (
-    <div className={classes.root}>
-      <div className={classes.contentWrapper}>
-        <div className={classes.playlist}>
-          <Playlist />
+    <ThemeProvider theme={theme}>
+      <div className={classes.root}>
+        <div className={classes.contentWrapper}>
+          <div className={classes.playlist}>
+            <Playlist />
+          </div>
+          <div className={classes.playlistContent}>
+            <SongList />
+          </div>
         </div>
-        <div className={classes.playlistContent}>
-          <SongList />
-        </div>
-      </div>
 
-      <BasePlayer />
-      <Settings />
-    </div>
+        <BasePlayer />
+        <Settings />
+      </div>
+    </ThemeProvider>
   );
 }
 

@@ -5,10 +5,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { FixedSizeList } from 'react-window';
 import { PhosPlayerContext } from './PhosPlayerContext'
-import { Divider } from '@material-ui/core';
 
 
-const PhosColor = "#38d4c9"
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
@@ -24,7 +22,7 @@ const useStyles = makeStyles(theme => ({
         color: '#888'
     },
     nowPlayingSong: {
-        color: PhosColor
+        color: theme.palette.primary.main
     }
 }));
 
@@ -35,7 +33,7 @@ function Row(props) {
     let artists = song.artist.map(a => a.name).join(",")
     const classes = useStyles();
 
-    const { currentPlaySong, phosColor } = state
+    const { currentPlaySong } = state
     const getRowClass = () => {
         if (song.title === currentPlaySong.title) {
             return classes.nowPlayingSong

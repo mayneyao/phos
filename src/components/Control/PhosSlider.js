@@ -2,11 +2,9 @@ import React from 'react'
 import Slider from '@material-ui/core/Slider';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 
-const PhosColor = "#38d4c9"
-
-const PhosSlider = withStyles({
+const PhosSlider = withStyles(({ palette }) => ({
     root: {
-        color: PhosColor,
+        color: palette.primary.main,
         height: 4,
     },
     thumb: {
@@ -31,7 +29,7 @@ const PhosSlider = withStyles({
     rail: {
         height: 4,
         borderRadius: 2,
-    },
-})(Slider);
+    }
+}))(Slider)
 
 export default PhosSlider

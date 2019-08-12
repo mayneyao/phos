@@ -6,7 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { FixedSizeList } from 'react-window';
 import { PhosPlayerContext } from './PhosPlayerContext'
 
-const PhosColor = "#38d4c9"
+
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
@@ -18,8 +18,8 @@ const useStyles = makeStyles(theme => ({
         width: '100%'
     },
     selected: {
-        color: PhosColor,
-        borderLeft: `4px solid ${PhosColor}`
+        color: theme.palette.primary.main,
+        borderLeft: `4px solid ${theme.palette.primary.main}`
     }
 }));
 

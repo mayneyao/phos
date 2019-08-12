@@ -22,7 +22,6 @@ import VolumeCard from './VolumeCard'
 import { PhosPlayerContext } from '../PhosPlayerContext'
 import ProcessSlider from './ProcessSlider'
 
-const PhosColor = '#38d4c9'
 
 let nb = new Notabase()
 
@@ -81,7 +80,7 @@ const useStyles = makeStyles(theme => ({
     right: '5%',
   },
   active: {
-    color: PhosColor
+    color: theme.palette.primary.main
   },
   settings: {
     position: 'absolute',

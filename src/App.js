@@ -1,10 +1,32 @@
 import React from 'react';
 import './App.css';
 import SongList from './components/SongList'
-import ControlCard from './components/Control/ControlCard'
+import Playlist from './components/Playlist'
 import Notabase from 'notabase'
 import BasePlayer from './components/BasePlayer'
 import { PhosPlayerContext } from "./components/PhosPlayerContext";
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  contentWrapper: {
+    display: 'flex',
+    height: '100%'
+  },
+  playlist: {
+    width: '30%',
+    height: '100%',
+    // maxWidth: 400,
+    backgroundColor: theme.palette.background.paper,
+    margin: '0 auto'
+  },
+  playlistContent: {
+    width: '70%',
+    height: '100%',
+    // maxWidth: 1200,
+    backgroundColor: theme.palette.background.paper,
+    margin: '0 auto'
+  },
+}));
 
 
 function PhosPlayer() {
@@ -30,12 +52,20 @@ function PhosPlayer() {
     fetchData()
   }, [])
 
+  const classes = useStyles()
 
   return (
     <div>
+      <div className={classes.contentWrapper}>
+        <div className={classes.playlist}>
+          <Playlist />
+        </div>
+        <div className={classes.playlistContent}>
+          <SongList />
+        </div>
+      </div>
+
       <BasePlayer />
-      <SongList />
-      <ControlCard />
     </div>
   );
 }

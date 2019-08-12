@@ -4,15 +4,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { FixedSizeList } from 'react-window';
-
 import { PhosPlayerContext } from './PhosPlayerContext'
 
+
+const PhosColor = "#38d4c9"
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
-        height: 400,
+        height: '100%',
         maxWidth: 1200,
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: '#eee',
         margin: '0 auto'
     },
     col: {
@@ -20,6 +21,9 @@ const useStyles = makeStyles(theme => ({
     },
     noSourceSong: {
         color: '#888'
+    },
+    nowPlayingSong: {
+        color: PhosColor
     }
 }));
 
@@ -29,8 +33,18 @@ function Row(props) {
     let song = data[index]
     let artists = song.artist.map(a => a.name).join(",")
     const classes = useStyles();
+
+    const { currentPlaySong, phosColor } = state
+    const getRowClass = () => {
+        if (song.title === currentPlaySong.title) {
+            return classes.nowPlayingSong
+        } else if (!song.file) {
+            return classes.noSourceSong
+        }
+    }
     return (
-        <ListItem button style={style} key={index} className={!song.file && classes.noSourceSong}
+        <ListItem button style={style} key={index}
+            className={getRowClass()}
             onClick={() => dispatch({
                 type: 'playOneSong',
                 payload: { song }
@@ -50,24 +64,27 @@ Row.propTypes = {
 
 export default function VirtualizedList() {
     const { state, dispatch } = React.useContext(PhosPlayerContext)
-    const { data } = state
+    const { data, playlistName } = state
     const classes = useStyles();
-
-    let d = data.songs ? data.songs.rows : []
-    console.log(d)
+    let songlist = data.songs ? data.songs.rows : []
+    if (songlist) {
+        if (playlistName) {
+            songlist = songlist.filter(item => item.playlist && item.playlist.includes(playlistName))
+        }
+    }
 
     return (
-        <div className={classes.root}>
-            <FixedSizeList
-                height={400}
-                width='100%'
-                itemSize={46}
-                itemCount={d.length}
-                itemData={d}
-            >
 
-                {Row}
-            </FixedSizeList>
-        </div>
+        <FixedSizeList
+            height={800}
+            width='100%'
+            itemSize={46}
+            itemCount={songlist.length}
+            itemData={songlist}
+        >
+
+            {Row}
+        </FixedSizeList>
+
     );
 }

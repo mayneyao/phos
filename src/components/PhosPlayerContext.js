@@ -26,7 +26,8 @@ const initState = {
 
     // theme
     phosColor: "#38d4c9",
-    playingState: {}
+    playingState: {},
+    openSettings: false // 是否打开配置
 }
 
 

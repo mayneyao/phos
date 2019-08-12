@@ -6,8 +6,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 
-
 // icon
+import SettingsIcon from '@material-ui/icons/Settings';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayIcon from '@material-ui/icons/PlayCircleOutline';
 import PauseIcon from '@material-ui/icons/Pause';
@@ -82,6 +82,11 @@ const useStyles = makeStyles(theme => ({
   },
   active: {
     color: PhosColor
+  },
+  settings: {
+    position: 'absolute',
+    bottom: 'calc(50% - 8px)',
+    right: '10px',
   }
 }));
 
@@ -189,6 +194,21 @@ export default function MediaControlCard(props) {
         <div className={classes.volumeWrapper}>
           <div className={classes.volume}>
             <VolumeCard />
+          </div>
+          <div className={classes.settings}>
+            <SettingsIcon aria-label="edit" className={classes.fab} onClick={
+              () => {
+                dispatch({
+                  type: 'setPlayerConfig',
+                  payload: {
+                    name: 'openSettings',
+                    value: true
+                  }
+                })
+              }
+            }>
+              settings
+            </SettingsIcon>
           </div>
         </div>
       </Card>

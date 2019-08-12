@@ -5,7 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.3.1",
     "@material-ui/icons": "^4.2.1",
-    "notabase": "^0.4.2",
+    "notabase": "^0.4.3",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-player": "^1.11.2",

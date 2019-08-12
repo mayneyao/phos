@@ -55,7 +55,7 @@ Row.propTypes = {
 
 export default function VirtualizedList() {
     const { state, dispatch } = React.useContext(PhosPlayerContext)
-    const { data } = state
+    const { data, playlistName } = state
     const classes = useStyles();
     let songTableSchema = data.songs ? data.songs.schema : []
     let playlists = []
@@ -72,16 +72,18 @@ export default function VirtualizedList() {
             <ListItem>
                 <ListItemText secondary={`歌单`} className={classes.col} />
             </ListItem>
-            <ListItem button onClick={
-                () => {
-                    dispatch({
-                        type: 'setPlaylistName',
-                        payload: {
-                            playlistName: undefined
-                        }
-                    })
-                }
-            }>
+            <ListItem button
+                className={!playlistName ? classes.selected : ''}
+                onClick={
+                    () => {
+                        dispatch({
+                            type: 'setPlaylistName',
+                            payload: {
+                                playlistName: undefined
+                            }
+                        })
+                    }
+                }>
                 <ListItemText primary={`全部歌曲`} className={classes.col} />
             </ListItem>
             <FixedSizeList

@@ -69,7 +69,7 @@ const useStyles = makeStyles(theme => ({
   },
   controlBtn: {
     margin: '0 auto',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       display: 'flex',
       justifyContent: 'space-between',
       width: '100%'

@@ -14,7 +14,12 @@ const useStyles = makeStyles(theme => ({
     },
     process: {
         maxWidth: 800,
-        width: 800,
+        [theme.breakpoints.down('sm')]: {
+            width: '100%',
+        },
+        [theme.breakpoints.up('sm')]: {
+            width: '80%',
+        },
         margin: '0 10px',
         position: 'relative'
 
@@ -23,6 +28,14 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         justifyContent: 'space-between',
         paddingTop: 20
+    },
+    time: {
+        display: 'block',
+        width: '10%',
+        padding: 3
+    },
+    timeLeft: {
+        textAlign: 'end'
     }
 }))
 
@@ -45,9 +58,9 @@ export default function ProcessSlider(props) {
     console.log(loadedSeconds)
     return <div className={classes.card}>
         <Hidden smDown>
-            <span>
+            <div className={`${classes.time} ${classes.timeLeft}`}>
                 {playedSeconds ? seconds2Minutes(playedSeconds) : '00:00'}
-            </span>
+            </div>
         </Hidden>
         <div className={classes.process}>
             <PhosCacheSlider
@@ -76,23 +89,23 @@ export default function ProcessSlider(props) {
             />
             <Hidden smUp>
                 <div className={classes.second}>
-                    <span>
+                    <div>
                         {playedSeconds ? seconds2Minutes(playedSeconds) : '00:00'}
-                    </span>
+                    </div>
 
-                    <span>
+                    <div>
                         {currentPlaySong.title && `${currentPlaySong.title}-${currentPlaySong.artist && currentPlaySong.artist.map(a => a.name).join(",")}`}
-                    </span>
-                    <span>
+                    </div>
+                    <div>
                         {len}
-                    </span>
+                    </div>
                 </div>
             </Hidden>
         </div>
         <Hidden smDown>
-            <span>
-                {isBufferEnd ? seconds2Minutes(loadedSeconds) : '00:00'}
-            </span>
+            <div className={classes.time}>
+                {len}
+            </div>
         </Hidden>
     </div>
 }

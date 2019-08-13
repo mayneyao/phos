@@ -4,19 +4,11 @@ import { withStyles, makeStyles } from '@material-ui/core/styles';
 
 const PhosSlider = withStyles(({ palette }) => ({
     root: {
-        color: '#25a79f',
+        color: palette.primary.main,
         height: 2,
     },
     thumb: {
-        height: 8,
-        width: 8,
-        backgroundColor: '#fff',
-        border: '2px solid currentColor',
-        marginTop: -2,
-        // marginLeft: 0,
-        '&:focus,&:hover,&$active': {
-            boxShadow: 'inherit',
-        },
+        display: 'none'
     },
     active: {},
     valueLabel: {
@@ -29,7 +21,7 @@ const PhosSlider = withStyles(({ palette }) => ({
     rail: {
         height: 4,
         borderRadius: 2,
-        backgroundColor: '#b7f0eb'
+        backgroundColor: 'rgba(0,0,0,.5)'
     }
 }))(Slider)
 

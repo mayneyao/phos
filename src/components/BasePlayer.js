@@ -55,6 +55,7 @@ export default function Player() {
             onProgress={onProgress}
             style={{ display: 'none' }}
             loop={repeat === 'one'}
+            progressInterval={0}
             onEnded={onEnded}
             onBuffer={onBuffer}
             onBufferEnd={onBufferEnd}

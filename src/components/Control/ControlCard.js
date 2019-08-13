@@ -5,6 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import Hidden from '@material-ui/core/Hidden';
 
 // icon
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -41,7 +42,12 @@ const useStyles = makeStyles(theme => ({
     width: '100%'
   },
   playControls: {
-    maxWidth: '50%',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: '50%',
+    },
     display: 'flex',
     flexDirection: 'column',
     paddingLeft: theme.spacing(1),
@@ -51,7 +57,7 @@ const useStyles = makeStyles(theme => ({
   songDetails: {
     padding: 10,
     display: 'flex',
-    width: '25%'
+    width: '25%',
   },
   cover: {
     width: 80,
@@ -62,7 +68,12 @@ const useStyles = makeStyles(theme => ({
     overflow: 'auto'
   },
   controlBtn: {
-    margin: '0 auto'
+    margin: '0 auto',
+    [theme.breakpoints.down('sm')]: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      width: '100%'
+    },
   },
   playIcon: {
     height: 38,
@@ -100,29 +111,35 @@ export default function MediaControlCard(props) {
     if (currentPlaySong && currentPlaySong.title && currentPlaySong.album && currentPlaySong.album[0] && currentPlaySong.album[0].cover) {
       return nb.parseImageUrl(currentPlaySong.album[0].cover[0], 100)
     } else {
-      return ''
+      return 'https://upload.wikimedia.org/wikipedia/commons/e/ec/Record-Album-02.jpg'
     }
   }
   return (
     <div>
       <Card className={classes.card}>
-        <div className={classes.songDetails}>
-          <CardMedia
-            className={classes.cover}
-            image={currentPlaySong.title && getCover()}
-            title={currentPlaySong.title}
-          />
-          <CardContent className={classes.content}>
-            <Typography component="h5" variant="h5" noWrap>
-              {currentPlaySong.title}
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary" noWrap>
-              {currentPlaySong.artist && currentPlaySong.artist.map(a => a.name).join(",")}
-            </Typography>
-          </CardContent>
-        </div>
-
+        <Hidden xsDown>
+          <div className={classes.songDetails}>
+            <CardMedia
+              className={classes.cover}
+              image={getCover()}
+              title={currentPlaySong.title}
+            />
+            <CardContent className={classes.content}>
+              <Typography component="h5" variant="h5" noWrap>
+                {currentPlaySong.title}
+              </Typography>
+              <Typography variant="subtitle1" color="textSecondary" noWrap>
+                {currentPlaySong.artist && currentPlaySong.artist.map(a => a.name).join(",")}
+              </Typography>
+            </CardContent>
+          </div>
+        </Hidden>
         <div className={classes.playControls}>
+          <Hidden smUp>
+            <div className={classes.processSlider}>
+              <ProcessSlider seekTo={props.seekTo} />
+            </div>
+          </Hidden>
           <div className={classes.controlBtn}>
             <IconButton aria-label="shuffle" onClick={
               () => {
@@ -185,31 +202,34 @@ export default function MediaControlCard(props) {
               }
             </IconButton>
           </div>
-          <div className={classes.processSlider}>
-            <ProcessSlider seekTo={props.seekTo} />
-          </div>
+          <Hidden xsDown>
+            <div className={classes.processSlider}>
+              <ProcessSlider seekTo={props.seekTo} />
+            </div>
+          </Hidden>
         </div>
-
-        <div className={classes.volumeWrapper}>
-          <div className={classes.volume}>
-            <VolumeCard />
-          </div>
-          <div className={classes.settings}>
-            <SettingsIcon aria-label="edit" className={classes.fab} onClick={
-              () => {
-                dispatch({
-                  type: 'setPlayerConfig',
-                  payload: {
-                    name: 'openSettings',
-                    value: true
-                  }
-                })
-              }
-            }>
-              settings
+        <Hidden xsDown>
+          <div className={classes.volumeWrapper}>
+            <div className={classes.volume}>
+              <VolumeCard />
+            </div>
+            <div className={classes.settings}>
+              <SettingsIcon aria-label="edit" className={classes.fab} onClick={
+                () => {
+                  dispatch({
+                    type: 'setPlayerConfig',
+                    payload: {
+                      name: 'openSettings',
+                      value: true
+                    }
+                  })
+                }
+              }>
+                settings
             </SettingsIcon>
+            </div>
           </div>
-        </div>
+        </Hidden>
       </Card>
     </div>
 

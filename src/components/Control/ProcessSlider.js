@@ -54,7 +54,7 @@ export default function ProcessSlider(props) {
     const classes = useStyles()
     const { length } = currentPlaySong
     let len = length ? seconds2Minutes(length) : '00:00'
-    console.log(loadedSeconds)
+
     return <div className={classes.card}>
         <Hidden smDown>
             <div className={`${classes.time} ${classes.timeLeft}`}>

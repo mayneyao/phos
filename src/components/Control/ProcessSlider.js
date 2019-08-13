@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 const seconds2Minutes = (time) => {
     let minutes = Math.floor(time / 60)
     let seconds = parseInt(time % 60)
-    if (seconds < 9) {
+    if (seconds < 10) {
         seconds = `0${seconds}`
     }
     return `${minutes}:${(seconds + '').slice(0, 2)}`

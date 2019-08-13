@@ -83,7 +83,7 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '100%',
   },
   volumeWrapper: {
-    width: '20%',
+    width: '25%',
   },
   volume: {
     position: 'absolute',

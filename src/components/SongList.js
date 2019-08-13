@@ -5,6 +5,9 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { FixedSizeList } from 'react-window';
 import { PhosPlayerContext } from './PhosPlayerContext'
+import Hidden from '@material-ui/core/Hidden';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
 
 
 const useStyles = makeStyles(theme => ({
@@ -18,9 +21,15 @@ const useStyles = makeStyles(theme => ({
     col: {
         width: '30%'
     },
+    smCol: {
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: 10
+        },
+    },
     noSourceSong: {
         color: '#888'
     },
+
     nowPlayingSong: {
         color: theme.palette.primary.main
     }
@@ -43,15 +52,24 @@ function Row(props) {
     }
     return (
         <ListItem button style={style} key={index}
-            className={getRowClass()}
+            className={`${classes.smCol} ${getRowClass()}`}
             onClick={() => dispatch({
                 type: 'playOneSong',
                 payload: { song }
             })}
         >
-            <ListItemText primary={`${song.title}`} className={classes.col} />
-            <ListItemText primary={`${artists}`} className={classes.col} />
-            <ListItemText primary={`${song.album[0].name}`} className={classes.col} />
+            <Hidden xsDown>
+                <ListItemText primary={`${song.title}`} className={classes.col} />
+                <ListItemText primary={`${artists}`} className={classes.col} />
+                <ListItemText primary={`${song.album[0].name}`} className={classes.col} />
+            </Hidden>
+            <Hidden smUp>
+                <ListItemText
+                    primary={`${song.title}`}
+                    secondary={`${artists} - ${song.album[0].name}`}
+                />
+            </Hidden>
+
         </ListItem>
     );
 }
@@ -66,6 +84,10 @@ export default function VirtualizedList() {
     const { data, playlistName } = state
     const classes = useStyles();
     let songlist = data.songs ? data.songs.rows : []
+
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down('sm'));
+
     if (songlist) {
         if (playlistName) {
             songlist = songlist.filter(item => item.playlist && item.playlist.includes(playlistName))
@@ -74,15 +96,18 @@ export default function VirtualizedList() {
 
     return (
         <>
-            <ListItem>
-                <ListItemText secondary={`标题`} className={classes.col} />
-                <ListItemText secondary={`艺人`} className={classes.col} />
-                <ListItemText secondary={`专辑`} className={classes.col} />
-            </ListItem>
+            <Hidden xsDown>
+                <ListItem>
+                    <ListItemText secondary={`标题`} className={classes.col} />
+                    <ListItemText secondary={`艺人`} className={classes.col} />
+                    <ListItemText secondary={`专辑`} className={classes.col} />
+                </ListItem>
+            </Hidden>
+
             <FixedSizeList
                 height={500}
                 width='100%'
-                itemSize={46}
+                itemSize={matches ? 60 : 46}
                 itemCount={songlist.length}
                 itemData={songlist}
             >

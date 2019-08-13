@@ -1,7 +1,6 @@
 
 import React from 'react'
-import Slider from '@material-ui/core/Slider';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { PhosPlayerContext } from '../PhosPlayerContext'
 import PhosSlider from './PhosSlider'
 import PhosCacheSlider from './PhosCacheSlider'
@@ -91,10 +90,6 @@ export default function ProcessSlider(props) {
                 <div className={classes.second}>
                     <div>
                         {playedSeconds ? seconds2Minutes(playedSeconds) : '00:00'}
-                    </div>
-
-                    <div>
-                        {currentPlaySong.title && `${currentPlaySong.title}-${currentPlaySong.artist && currentPlaySong.artist.map(a => a.name).join(",")}`}
                     </div>
                     <div>
                         {len}

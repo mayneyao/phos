@@ -5,6 +5,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { FixedSizeList } from 'react-window';
 import { PhosPlayerContext } from './PhosPlayerContext'
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Hidden from '@material-ui/core/Hidden';
 
 
 const useStyles = makeStyles(theme => ({
@@ -54,6 +58,8 @@ Row.propTypes = {
 };
 
 export default function VirtualizedList() {
+
+    // > sm menu
     const { state, dispatch } = React.useContext(PhosPlayerContext)
     const { data, playlistName } = state
     const classes = useStyles();
@@ -67,34 +73,78 @@ export default function VirtualizedList() {
     if (playlistRawData) {
         playlists = playlistRawData.options
     }
+
+
+    // < sm menu
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    function handleClick(event) {
+        setAnchorEl(event.currentTarget);
+    }
+
+    function handleClose(playlistName) {
+        setAnchorEl(null);
+        dispatch({
+            type: 'setPlaylistName',
+            payload: {
+                playlistName
+            }
+        })
+    }
+
     return (
-        <div className={classes.root}>
-            <ListItem>
-                <ListItemText secondary={`歌单`} className={classes.col} />
-            </ListItem>
-            <ListItem button
-                className={!playlistName ? classes.selected : ''}
-                onClick={
-                    () => {
-                        dispatch({
-                            type: 'setPlaylistName',
-                            payload: {
-                                playlistName: undefined
+        <div>
+            <Hidden smDown>
+
+                <div className={classes.root}>
+                    <ListItem>
+                        <ListItemText secondary={`歌单`} className={classes.col} />
+                    </ListItem>
+                    <ListItem button
+                        className={!playlistName ? classes.selected : ''}
+                        onClick={
+                            () => {
+                                dispatch({
+                                    type: 'setPlaylistName',
+                                    payload: {
+                                        playlistName: undefined
+                                    }
+                                })
                             }
-                        })
-                    }
-                }>
-                <ListItemText primary={`全部歌曲`} className={classes.col} />
-            </ListItem>
-            <FixedSizeList
-                height={500}
-                width='100%'
-                itemSize={46}
-                itemCount={playlists.length}
-                itemData={playlists}
-            >
-                {Row}
-            </FixedSizeList>
+                        }>
+                        <ListItemText primary={`全部歌曲`} className={classes.col} />
+                    </ListItem>
+                    <FixedSizeList
+                        height={500}
+                        width='100%'
+                        itemSize={46}
+                        itemCount={playlists.length}
+                        itemData={playlists}
+                    >
+                        {Row}
+                    </FixedSizeList>
+                </div>
+            </Hidden>
+            <Hidden smUp>
+                <div>
+                    <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+                        {playlistName || '全部歌曲'}
+                    </Button>
+                    <Menu
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={() => handleClose()}
+                    >
+                        <MenuItem onClick={() => handleClose(undefined)}>全部歌曲</MenuItem>
+                        {
+                            playlists.map(playlist => <MenuItem onClick={() => handleClose(playlist.value)}>{playlist.value}</MenuItem>)
+                        }
+                    </Menu>
+                </div>
+
+            </Hidden>
         </div>
-    );
+    )
 }

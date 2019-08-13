@@ -5,6 +5,10 @@ import Playlist from './components/Playlist'
 import Notabase from 'notabase'
 import BasePlayer from './components/BasePlayer'
 import Settings from './components/Settings'
+import Hidden from '@material-ui/core/Hidden';
+import SettingsIcon from '@material-ui/icons/Settings';
+import LinearProgress from '@material-ui/core/LinearProgress';
+
 
 import { PhosPlayerContext } from "./components/PhosPlayerContext";
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,39 +27,63 @@ const useStyles = makeStyles(theme => ({
   root: {
   },
   contentWrapper: {
-    display: 'flex',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+    [theme.breakpoints.up('sm')]: {
+      display: 'flex',
+    },
     height: '100%'
   },
   playlist: {
-    width: '25%',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: '25%',
+    },
     height: '100%',
     // maxWidth: 400,
     // backgroundColor: theme.palette.background.paper,
     margin: '0 auto'
   },
   playlistContent: {
-    width: '75%',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: '75%',
+    },
     height: '100%',
     // maxWidth: 1200,
     // backgroundColor: theme.palette.background.paper,
     margin: '0 auto'
   },
+  setting: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    color: '#aaa'
+  },
+  listTitleWrapper: {
+    width: '100%',
+    textAlign: 'center'
+  }
 }));
 
 
 function PhosPlayer() {
   const { state, dispatch } = React.useContext(PhosPlayerContext)
 
+  const { loading } = state
   React.useEffect(() => {
     let nb = new Notabase()
     const fetchData = async () => {
       console.log("fetchData")
       let phosConfigURL = localStorage.getItem("phosConfigURL")
       if (phosConfigURL) {
-        console.log(phosConfigURL)
+        // console.log(phosConfigURL)
         let config = await nb._fetch(phosConfigURL)
-        console.log(config.rows.find(i => i.name === "songs").url[0][1][0][1])
-        console.log(config)
         let db = await nb.fetch({
           songs: config.rows.find(i => i.name === "songs").url[0][1][0][1],
           albums: config.rows.find(i => i.name === "albums").url[0][1][0][1],
@@ -68,7 +96,10 @@ function PhosPlayer() {
             data: db
           }
         })
-      } else {
+
+        dispatch({ type: 'loading' })
+
+      } else {  
         dispatch({
           type: 'setPlayerConfig',
           payload: {
@@ -86,9 +117,30 @@ function PhosPlayer() {
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.root}>
+        {
+          loading && <LinearProgress />
+        }
         <div className={classes.contentWrapper}>
           <div className={classes.playlist}>
-            <Playlist />
+            <div className={classes.listTitleWrapper}>
+              <Playlist />
+            </div>
+
+            <Hidden smUp>
+              <SettingsIcon aria-label="edit" className={classes.setting} onClick={
+                () => {
+                  dispatch({
+                    type: 'setPlayerConfig',
+                    payload: {
+                      name: 'openSettings',
+                      value: true
+                    }
+                  })
+                }
+              }>
+                settings
+              </SettingsIcon>
+            </Hidden>
           </div>
           <div className={classes.playlistContent}>
             <SongList />

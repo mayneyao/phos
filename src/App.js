@@ -52,11 +52,14 @@ function PhosPlayer() {
       console.log("fetchData")
       let phosConfigURL = localStorage.getItem("phosConfigURL")
       if (phosConfigURL) {
+        console.log(phosConfigURL)
         let config = await nb._fetch(phosConfigURL)
+        console.log(config.rows.find(i => i.name === "songs").url[0][1][0][1])
+        console.log(config)
         let db = await nb.fetch({
-          songs: config.rows.find(i => i.name === "songs").url,
-          albums: config.rows.find(i => i.name === "albums").url,
-          artists: config.rows.find(i => i.name === "artists").url,
+          songs: config.rows.find(i => i.name === "songs").url[0][1][0][1],
+          albums: config.rows.find(i => i.name === "albums").url[0][1][0][1],
+          artists: config.rows.find(i => i.name === "artists").url[0][1][0][1],
         })
 
         dispatch({

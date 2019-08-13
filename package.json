@@ -10,11 +10,12 @@
     "react-dom": "^16.9.0",
     "react-player": "^1.11.2",
     "react-scripts": "3.0.1",
-    "react-window": "^1.8.5"
+    "react-window": "^1.8.5",
+    "workbox-sw": "^4.3.1"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && node build-sw.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

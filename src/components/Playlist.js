@@ -139,7 +139,7 @@ export default function VirtualizedList() {
                     >
                         <MenuItem onClick={() => handleClose(undefined)}>全部歌曲</MenuItem>
                         {
-                            playlists.map(playlist => <MenuItem onClick={() => handleClose(playlist.value)}>{playlist.value}</MenuItem>)
+                            playlists.map(playlist => <MenuItem key={playlist.value} onClick={() => handleClose(playlist.value)}>{playlist.value}</MenuItem>)
                         }
                     </Menu>
                 </div>

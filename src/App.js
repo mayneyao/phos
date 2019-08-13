@@ -5,6 +5,8 @@ import Playlist from './components/Playlist'
 import Notabase from 'notabase'
 import BasePlayer from './components/BasePlayer'
 import Settings from './components/Settings'
+import Hidden from '@material-ui/core/Hidden';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 import { PhosPlayerContext } from "./components/PhosPlayerContext";
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,23 +25,47 @@ const useStyles = makeStyles(theme => ({
   root: {
   },
   contentWrapper: {
-    display: 'flex',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+    [theme.breakpoints.up('sm')]: {
+      display: 'flex',
+    },
     height: '100%'
   },
   playlist: {
-    width: '25%',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: '25%',
+    },
     height: '100%',
     // maxWidth: 400,
     // backgroundColor: theme.palette.background.paper,
     margin: '0 auto'
   },
   playlistContent: {
-    width: '75%',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: '75%',
+    },
     height: '100%',
     // maxWidth: 1200,
     // backgroundColor: theme.palette.background.paper,
     margin: '0 auto'
   },
+  setting: {
+    position: 'absolute',
+    top: 6,
+    right: 6
+  },
+  listTitleWrapper: {
+    width: '100%',
+    textAlign: 'center'
+  }
 }));
 
 
@@ -88,7 +114,25 @@ function PhosPlayer() {
       <div className={classes.root}>
         <div className={classes.contentWrapper}>
           <div className={classes.playlist}>
-            <Playlist />
+            <div className={classes.listTitleWrapper}>
+              <Playlist />
+            </div>
+
+            <Hidden smUp>
+              <SettingsIcon aria-label="edit" className={classes.setting} onClick={
+                () => {
+                  dispatch({
+                    type: 'setPlayerConfig',
+                    payload: {
+                      name: 'openSettings',
+                      value: true
+                    }
+                  })
+                }
+              }>
+                settings
+              </SettingsIcon>
+            </Hidden>
           </div>
           <div className={classes.playlistContent}>
             <SongList />

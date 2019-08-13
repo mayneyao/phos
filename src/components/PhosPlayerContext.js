@@ -24,10 +24,12 @@ const initState = {
     shuffle: false,
     repeat: 'none', // ['none','one','list'] 不循环 | 单曲循环 | 列表循环
 
-    // theme
+    // player state
     phosColor: "#38d4c9",
     playingState: {},
-    openSettings: false // 是否打开配置
+    openSettings: false, // 是否打开配置
+    loading: true
+
 }
 
 
@@ -50,8 +52,11 @@ function phosReducer(state, action) {
             } else {
                 return state
             }
-
-
+        case 'loading':
+            return {
+                ...state,
+                loading: !state.loading
+            }
         case 'playOneSong':
             if (action.payload.song.file) {
                 // 当前播放列表名称

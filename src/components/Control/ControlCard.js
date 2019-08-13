@@ -96,6 +96,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     bottom: 'calc(50% - 8px)',
     right: '10px',
+    color: '#aaa'
   }
 }));
 

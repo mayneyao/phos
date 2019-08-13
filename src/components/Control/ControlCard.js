@@ -60,9 +60,8 @@ const useStyles = makeStyles(theme => ({
     width: '25%',
   },
   cover: {
-    width: 80,
+    width: 100,
     height: '100%',
-    minWidth: 80
   },
   content: {
     overflow: 'auto'
@@ -109,7 +108,7 @@ export default function MediaControlCard(props) {
 
   const getCover = () => {
     if (currentPlaySong && currentPlaySong.title && currentPlaySong.album && currentPlaySong.album[0] && currentPlaySong.album[0].cover) {
-      return nb.parseImageUrl(currentPlaySong.album[0].cover[0], 100)
+      return nb.parseImageUrl(currentPlaySong.album[0].cover[0], 80)
     } else {
       return 'https://upload.wikimedia.org/wikipedia/commons/e/ec/Record-Album-02.jpg'
     }
@@ -119,11 +118,14 @@ export default function MediaControlCard(props) {
       <Card className={classes.card}>
         <Hidden xsDown>
           <div className={classes.songDetails}>
-            <CardMedia
-              className={classes.cover}
-              image={getCover()}
-              title={currentPlaySong.title}
-            />
+            {
+              currentPlaySong.title && <CardMedia
+                className={classes.cover}
+                image={getCover()}
+                title={currentPlaySong.title}
+              />
+            }
+
             <CardContent className={classes.content}>
               <Typography component="h5" variant="h5" noWrap>
                 {currentPlaySong.title}

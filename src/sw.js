@@ -9,7 +9,6 @@ if (workbox) {
     // 优先从缓存中获取 API 基础数据，然后获取新的数据更新缓存
     workbox.routing.registerRoute(
         ({ url, event }) => {
-            console.log(url)
             if (url.pathname.startsWith("/api/v3")) {
                 return true
             }

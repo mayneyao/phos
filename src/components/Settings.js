@@ -26,7 +26,8 @@ export default function FormDialog() {
     const handleSave = () => {
         localStorage.setItem("phosConfigURL", phosConfigURL)
         handleClose()
-        window.location.reload()
+        // 清理分享链接，访问自己的配置
+        window.location.pathname = '/'
     }
     return (
         <div>

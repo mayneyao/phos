@@ -79,8 +79,17 @@ function PhosPlayer() {
   React.useEffect(() => {
     let nb = new Notabase()
     const fetchData = async () => {
-      console.log("fetchData")
-      let phosConfigURL = localStorage.getItem("phosConfigURL")
+      let pathname = window.location.pathname
+      let phosConfigURL
+      if (pathname.length === 33) {
+        // 优先从地址栏获取配置
+        // / + 32位 pageid
+        phosConfigURL = pathname.slice(1)
+      } else {
+        phosConfigURL = localStorage.getItem("phosConfigURL")
+      }
+
+      console.log(phosConfigURL)
       if (phosConfigURL) {
         // console.log(phosConfigURL)
         let config = await nb._fetch(phosConfigURL)
@@ -99,7 +108,7 @@ function PhosPlayer() {
 
         dispatch({ type: 'loading' })
 
-      } else {  
+      } else {
         dispatch({
           type: 'setPlayerConfig',
           payload: {

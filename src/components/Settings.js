@@ -27,7 +27,7 @@ export default function FormDialog() {
         localStorage.setItem("phosConfigURL", phosConfigURL)
         handleClose()
         // 清理分享链接，访问自己的配置
-        window.location.pathname = '/'
+        window.location.href = window.location.origin
     }
     return (
         <div>

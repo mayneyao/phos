@@ -79,19 +79,17 @@ function PhosPlayer() {
   React.useEffect(() => {
     let nb = new Notabase()
     const fetchData = async () => {
-      let pathname = window.location.pathname
+      let hash = window.location.hash
       let phosConfigURL
-      if (pathname.length === 33) {
+      if (hash.length === 33) {
         // 优先从地址栏获取配置
         // / + 32位 pageid
-        phosConfigURL = pathname.slice(1)
+        phosConfigURL = hash.slice(1)
       } else {
         phosConfigURL = localStorage.getItem("phosConfigURL")
       }
-
-      console.log(phosConfigURL)
+      
       if (phosConfigURL) {
-        // console.log(phosConfigURL)
         let config = await nb._fetch(phosConfigURL)
         let db = await nb.fetch({
           songs: config.rows.find(i => i.name === "songs").url[0][1][0][1],

@@ -94,8 +94,7 @@ export default function VirtualizedList() {
 
     return (
         <div>
-            <Hidden smDown>
-
+            <Hidden xsDown>
                 <div className={classes.root}>
                     <ListItem>
                         <ListItemText secondary={`歌单`} className={classes.col} />

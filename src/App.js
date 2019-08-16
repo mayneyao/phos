@@ -81,14 +81,19 @@ function PhosPlayer() {
     const fetchData = async () => {
       let hash = window.location.hash
       let phosConfigURL
-      if (hash.length === 33) {
-        // 优先从地址栏获取配置
-        // / + 32位 pageid
-        phosConfigURL = hash.slice(1)
+      if (hash) {
+        // 处理微信跳转过来的链接
+        let [phosConfigURL, fuckWechat] = hash.slice(1).split('?')
+
+        if (phosConfigURL.includes("@")) {
+          // 分享音乐 todo
+          let shareSongId
+          [phosConfigURL, shareSongId] = phosConfigURL.split("?")
+        }
       } else {
         phosConfigURL = localStorage.getItem("phosConfigURL")
       }
-      
+
       if (phosConfigURL) {
         let config = await nb._fetch(phosConfigURL)
         let db = await nb.fetch({

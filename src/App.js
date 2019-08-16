@@ -83,18 +83,21 @@ function PhosPlayer() {
       let phosConfigURL
       if (hash) {
         // 处理微信跳转过来的链接
-        let [phosConfigURL, fuckWechat] = hash.slice(1).split('?')
+        let fuckWechat;
+        [phosConfigURL, fuckWechat] = hash.slice(1).split('?')
+        
 
         if (phosConfigURL.includes("@")) {
           // 分享音乐 todo
-          let shareSongId
-          [phosConfigURL, shareSongId] = phosConfigURL.split("?")
+          let shareSongId;
+          [phosConfigURL, shareSongId] = phosConfigURL.split("@")
         }
       } else {
         phosConfigURL = localStorage.getItem("phosConfigURL")
       }
-
+      
       if (phosConfigURL) {
+        console.log('请求数据')
         let config = await nb._fetch(phosConfigURL)
         let db = await nb.fetch({
           songs: config.rows.find(i => i.name === "songs").url[0][1][0][1],
@@ -112,6 +115,7 @@ function PhosPlayer() {
         dispatch({ type: 'loading' })
 
       } else {
+        console.log('打开配置')
         dispatch({
           type: 'setPlayerConfig',
           payload: {

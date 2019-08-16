@@ -39,7 +39,7 @@ export default function FormDialog() {
                 <DialogTitle id="form-dialog-title">配置</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        填入 Notion 配置表格的 URL  <a target="_blank" href="https://www.notion.so/gine/Phos-9a31e68f8f004daaa5e79102ffd843d7">help?</a>
+                        用 Phos 管理自己的音乐/播客？  <a target="_blank" href="https://www.notion.so/gine/Phos-9a31e68f8f004daaa5e79102ffd843d7">help?</a>
                     </DialogContentText>
                     <TextField
                         margin="dense"

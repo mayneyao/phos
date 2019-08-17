@@ -6567,6 +6567,11 @@ no-case@^2.2.0:
   dependencies:
     lower-case "^1.1.1"
 
+node-fetch@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"
+  integrity sha512-8dG4H5ujfvFiqDmVu9fQ5bOHUC15JMjMY/Zumv26oOvvVJjM67KF8koCWIabKQ1GJIa9r2mMZscBq/TbdOcmNA==
+
 node-forge@0.7.5:
   version "0.7.5"
   resolved "https://registry.npm.taobao.org/node-forge/download/node-forge-0.7.5.tgz#6c152c345ce11c52f465c2abd957e8639cd674df"
@@ -6690,13 +6695,14 @@ normalize-url@^3.0.0:
   resolved "https://registry.npm.taobao.org/normalize-url/download/normalize-url-3.3.0.tgz#b2e1c4dc4f7c6d57743df733a4f5978d18650559"
   integrity sha1-suHE3E98bVd0PfczpPWXjRhlBVk=
 
-notabase@^0.4.7:
-  version "0.4.7"
-  resolved "https://registry.npmjs.org/notabase/-/notabase-0.4.7.tgz#9130e5cea10d617ad99eb4c826ee967018c677ef"
-  integrity sha512-pt3dQziOMB5huI/UfVHg93BKaD6fUDOgPWfzRqv1ZAA8aAjmCGU2xHfZW2eaZa0fZ5JkgL4daT7EUFJGqaRW7Q==
+notabase@^0.5.0-next.3:
+  version "0.5.0-next.3"
+  resolved "https://registry.npmjs.org/notabase/-/notabase-0.5.0-next.3.tgz#e0cacaffd1b5463bccc475d128f23cad5ca77570"
+  integrity sha512-Yl5iGo0ybbNVOBfU5qK/ZHKzL83+iAGgfddSMxIF2Bp9V/Owa0s8Mz3OyinC1b5wKM1aVulXOLiLn/Qj+mrhqw==
   dependencies:
     axios "^0.19.0"
     dayjs "^1.8.15"
+    node-fetch "^2.6.0"
 
 npm-bundled@^1.0.1:
   version "1.0.6"

@@ -77,7 +77,14 @@ function PhosPlayer() {
 
   const { loading } = state
   React.useEffect(() => {
-    let nb = new Notabase()
+    let nb = new Notabase({
+      proxy: {
+        url: "https://notion.gine.workers.dev",
+        authCode: '3.141592653'
+      }
+    })
+
+    console.log(nb.url)
     const fetchData = async () => {
       console.log("fetchData")
       let phosConfigURL = localStorage.getItem("phosConfigURL")
@@ -99,7 +106,7 @@ function PhosPlayer() {
 
         dispatch({ type: 'loading' })
 
-      } else {  
+      } else {
         dispatch({
           type: 'setPlayerConfig',
           payload: {

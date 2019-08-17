@@ -13,6 +13,9 @@ export default function FormDialog() {
     const { openSettings } = state
 
     let [phosConfigURL, setPhosConfigURL] = React.useState(localStorage.getItem("phosConfigURL"))
+    let [proxy, setProxy] = React.useState(localStorage.getItem("security.proxy"))
+    let [authCode, setAuthCode] = React.useState(localStorage.getItem("security.authCode"))
+
     function handleClose() {
         dispatch({
             type: 'setPlayerConfig',
@@ -25,6 +28,8 @@ export default function FormDialog() {
 
     const handleSave = () => {
         localStorage.setItem("phosConfigURL", phosConfigURL)
+        localStorage.setItem("security.proxy", proxy)
+        localStorage.setItem("security.authCode", authCode)
         handleClose()
         window.location.reload()
     }
@@ -49,6 +54,24 @@ export default function FormDialog() {
                         onChange={(e) => setPhosConfigURL(e.target.value)}
                         fullWidth
                         required
+                    />
+                    <TextField
+                        margin="dense"
+                        id="proxy"
+                        label="cloudflare proxy-worker url"
+                        type="url"
+                        value={proxy}
+                        onChange={(e) => setProxy(e.target.value)}
+                        fullWidth
+                    />
+                    <TextField
+                        margin="dense"
+                        id="authCode"
+                        label="authCode"
+                        type="url"
+                        value={authCode}
+                        onChange={(e) => setAuthCode(e.target.value)}
+                        fullWidth
                     />
                 </DialogContent>
                 <DialogActions>

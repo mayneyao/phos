@@ -27,8 +27,8 @@ export default function FormDialog() {
 
     const handleSave = () => {
         localStorage.setItem("phosConfigURL", phosConfigURL)
-        localStorage.setItem("security.proxyUrl", proxyUrl)
-        localStorage.setItem("security.authCode", authCode)
+        localStorage.setItem("security.proxyUrl", proxyUrl || '')
+        localStorage.setItem("security.authCode", authCode || '')
         handleClose()
         // 清理分享链接，访问自己的配置
         window.location.href = window.location.origin

@@ -100,13 +100,11 @@ function PhosPlayer() {
         let fuckWechat;
         [phosConfigURL, fuckWechat] = hash.slice(1).split('?')
 
-
         if (phosConfigURL.includes("@")) {
           // 分享音乐 todo
           let shareSongId;
           [phosConfigURL, shareSongId] = phosConfigURL.split("@")
         }
-        nb = new Notabase()
       } else {
         // 处理个人数据时候
         phosConfigURL = localStorage.getItem("phosConfigURL")

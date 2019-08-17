@@ -77,7 +77,7 @@ function PhosPlayer() {
 
   const { loading } = state
   React.useEffect(() => {
-    let nb = new Notabase()
+    let nb
     const fetchData = async () => {
       let hash = window.location.hash
       let phosConfigURL
@@ -85,19 +85,31 @@ function PhosPlayer() {
         // 处理微信跳转过来的链接
         let fuckWechat;
         [phosConfigURL, fuckWechat] = hash.slice(1).split('?')
-        
+
 
         if (phosConfigURL.includes("@")) {
           // 分享音乐 todo
           let shareSongId;
           [phosConfigURL, shareSongId] = phosConfigURL.split("@")
         }
+        nb = new Notabase()
       } else {
+        // 处理个人数据时候
         phosConfigURL = localStorage.getItem("phosConfigURL")
+
+        let proxyUrl = localStorage.getItem("security.proxyUrl")
+        let authCode = localStorage.getItem("security.authCode")
+
+        let proxy = {}
+        if (proxyUrl) {
+          proxy = {
+            url: proxyUrl,
+            authCode
+          }
+        }
+        nb = new Notabase({ proxy })
       }
-      
       if (phosConfigURL) {
-        console.log('请求数据')
         let config = await nb._fetch(phosConfigURL)
         let db = await nb.fetch({
           songs: config.rows.find(i => i.name === "songs").url[0][1][0][1],
@@ -115,7 +127,6 @@ function PhosPlayer() {
         dispatch({ type: 'loading' })
 
       } else {
-        console.log('打开配置')
         dispatch({
           type: 'setPlayerConfig',
           payload: {

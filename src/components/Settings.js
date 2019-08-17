@@ -69,7 +69,7 @@ export default function FormDialog() {
                         id="authCode"
                         label="authCode"
                         type="url"
-                        value={proxyUrl || ''}
+                        value={authCode || ''}
                         onChange={(e) => setAuthCode(e.target.value)}
                         fullWidth
                     />

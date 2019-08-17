@@ -16,6 +16,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 
 
+const FREE_PUBLIC_PROXY = 'https://notion.gine.workers.dev'
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#38d4c9' }, // phos color
@@ -77,7 +78,18 @@ function PhosPlayer() {
 
   const { loading } = state
   React.useEffect(() => {
-    let nb = new Notabase()
+    let proxyUrl = localStorage.getItem("security.proxyUrl")
+    let authCode = localStorage.getItem("security.authCode")
+
+    let proxy = {}
+    if (proxyUrl) {
+      proxy = {
+        url: proxyUrl || FREE_PUBLIC_PROXY,
+        authCode
+      }
+    }
+    let nb = new Notabase({ proxy })
+    
     const fetchData = async () => {
       let hash = window.location.hash
       let phosConfigURL

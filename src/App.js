@@ -77,19 +77,39 @@ function PhosPlayer() {
 
   const { loading } = state
   React.useEffect(() => {
-    let nb = new Notabase({
-      proxy: {
-        url: "https://notion.gine.workers.dev",
-        authCode: '3.141592653'
-      }
-    })
-
-    console.log(nb.url)
+    let nb
     const fetchData = async () => {
-      console.log("fetchData")
-      let phosConfigURL = localStorage.getItem("phosConfigURL")
+      let hash = window.location.hash
+      let phosConfigURL
+      if (hash) {
+        // 处理微信跳转过来的链接
+        let fuckWechat;
+        [phosConfigURL, fuckWechat] = hash.slice(1).split('?')
+
+
+        if (phosConfigURL.includes("@")) {
+          // 分享音乐 todo
+          let shareSongId;
+          [phosConfigURL, shareSongId] = phosConfigURL.split("@")
+        }
+        nb = new Notabase()
+      } else {
+        // 处理个人数据时候
+        phosConfigURL = localStorage.getItem("phosConfigURL")
+
+        let proxyUrl = localStorage.getItem("security.proxyUrl")
+        let authCode = localStorage.getItem("security.authCode")
+
+        let proxy = {}
+        if (proxyUrl) {
+          proxy = {
+            url: proxyUrl,
+            authCode
+          }
+        }
+        nb = new Notabase({ proxy })
+      }
       if (phosConfigURL) {
-        // console.log(phosConfigURL)
         let config = await nb._fetch(phosConfigURL)
         let db = await nb.fetch({
           songs: config.rows.find(i => i.name === "songs").url[0][1][0][1],

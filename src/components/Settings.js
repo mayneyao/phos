@@ -60,7 +60,7 @@ export default function FormDialog() {
                         id="proxy"
                         label="cloudflare proxy-worker url"
                         type="url"
-                        value={proxyUrl}
+                        value={proxyUrl || ''}
                         onChange={(e) => setProxyUrl(e.target.value)}
                         fullWidth
                     />
@@ -69,7 +69,7 @@ export default function FormDialog() {
                         id="authCode"
                         label="authCode"
                         type="url"
-                        value={authCode}
+                        value={proxyUrl || ''}
                         onChange={(e) => setAuthCode(e.target.value)}
                         fullWidth
                     />

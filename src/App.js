@@ -81,15 +81,17 @@ function PhosPlayer() {
     let proxyUrl = localStorage.getItem("security.proxyUrl")
     let authCode = localStorage.getItem("security.authCode")
 
-    let proxy = {}
+    let proxy = {
+      url: FREE_PUBLIC_PROXY
+    }
     if (proxyUrl) {
       proxy = {
-        url: proxyUrl || FREE_PUBLIC_PROXY,
+        url: proxyUrl,
         authCode
       }
     }
     let nb = new Notabase({ proxy })
-    
+
     const fetchData = async () => {
       let hash = window.location.hash
       let phosConfigURL
@@ -108,18 +110,6 @@ function PhosPlayer() {
       } else {
         // 处理个人数据时候
         phosConfigURL = localStorage.getItem("phosConfigURL")
-
-        let proxyUrl = localStorage.getItem("security.proxyUrl")
-        let authCode = localStorage.getItem("security.authCode")
-
-        let proxy = {}
-        if (proxyUrl) {
-          proxy = {
-            url: proxyUrl,
-            authCode
-          }
-        }
-        nb = new Notabase({ proxy })
       }
       if (phosConfigURL) {
         let config = await nb._fetch(phosConfigURL)

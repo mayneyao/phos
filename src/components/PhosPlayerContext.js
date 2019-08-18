@@ -35,6 +35,20 @@ const initState = {
 
 // reducer
 
+function getSongSourceFileAndArtists(song) {
+    let songSourceFile
+    if (song.file) {
+        // notion source
+        songSourceFile = `${NOTION_BASE}/signed/${encodeURIComponent(song.file[0]).replace("s3.us-west", "s3-us-west")}`
+    } else if (song.id_163) {
+        // 163 music source
+        songSourceFile = `http://music.163.com/song/media/outer/url?id=${song.id_163}.mp3`
+    }
+    let artists = `${song.artist && song.artist.length ? song.artist.filter(i => !!i).map(a => a.name).join(",") : '未知'}`
+
+    return [songSourceFile, artists]
+}
+
 function phosReducer(state, action) {
     const { currentPlaySong, currentPlaylist } = state
     switch (action.type) {
@@ -58,11 +72,11 @@ function phosReducer(state, action) {
                 loading: !state.loading
             }
         case 'playOneSong':
-            if (action.payload.song.file) {
+            if (action.payload.song.file || action.payload.song.id_163) {
                 // 当前播放列表名称
                 const { playlistName } = state
                 let _currentPlaylist = []
-                let songsCanPlay = state.data.songs.rows.filter(song => !!song.file)
+                let songsCanPlay = state.data.songs.rows.filter(song => !!song.file || !!song.id_163)
                 if (!playlistName) {
                     // 全部歌曲列表 > 当前播放列表
                     _currentPlaylist = songsCanPlay
@@ -71,12 +85,14 @@ function phosReducer(state, action) {
                     _currentPlaylist = songsCanPlay.filter(song => song.playlist && song.playlist.includes(playlistName))
                 }
 
-                document.title = `${action.payload.song.title} - ${action.payload.song.artist.map(a => a.name).join(",")}`
-                //
+
+                let [songSourceFile, artists] = getSongSourceFileAndArtists(action.payload.song)
+                document.title = `${action.payload.song.title} - ${artists}`
+
                 return {
                     ...state,
                     currentPlaySong: action.payload.song,
-                    url: `${NOTION_BASE}/signed/${encodeURIComponent(action.payload.song.file[0]).replace("s3.us-west", "s3-us-west")}`,
+                    url: songSourceFile,
                     isReady: false,
                     playing: true,
                     isBufferEnd: false,
@@ -130,11 +146,12 @@ function phosReducer(state, action) {
                     prevSongIndex = (currentPlaylist.findIndex(i => i.title === currentPlaySong.title) - 1) % currentPlaylist.length
                 }
                 let prevSong = currentPlaylist[prevSongIndex]
-                document.title = `${prevSong.title} - ${prevSong.artist.map(a => a.name).join(",")}`
+                let [songSourceFile, artists] = getSongSourceFileAndArtists(prevSong)
+                document.title = `${prevSong.title} - ${artists}`
                 return {
                     ...state,
                     currentPlaySong: prevSong,
-                    url: `${NOTION_BASE}/signed/${encodeURIComponent(prevSong.file[0]).replace("s3.us-west", "s3-us-west")}`,
+                    url: songSourceFile,
                 }
             } else {
                 return state
@@ -144,12 +161,13 @@ function phosReducer(state, action) {
             if (currentPlaySong.title) {
                 let nextSongIndex = (currentPlaylist.findIndex(s => s.title === currentPlaySong.title) + 1) % currentPlaylist.length
                 let nextSong = currentPlaylist[nextSongIndex]
-                document.title = `${nextSong.title} - ${nextSong.artist.map(a => a.name).join(",")}`
-                // fixme
+                let [songSourceFile, artists] = getSongSourceFileAndArtists(nextSong)
+                document.title = `${nextSong.title} - ${artists}`
+
                 return {
                     ...state,
                     currentPlaySong: nextSong,
-                    url: `${NOTION_BASE}/signed/${encodeURIComponent(nextSong.file[0]).replace("s3.us-west", "s3-us-west")}`,
+                    url: songSourceFile,
                 }
             } else {
                 return state

@@ -22,7 +22,7 @@ import Notabase from 'notabase'
 import VolumeCard from './VolumeCard'
 import { PhosPlayerContext } from '../PhosPlayerContext'
 import ProcessSlider from './ProcessSlider'
-
+import { getSongArtists } from '../utils'
 
 let nb = new Notabase()
 
@@ -50,18 +50,16 @@ const useStyles = makeStyles(theme => ({
     },
     display: 'flex',
     flexDirection: 'column',
-    paddingLeft: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
     margin: '0 auto'
   },
   songDetails: {
-    padding: 10,
     display: 'flex',
     width: '25%',
   },
   cover: {
-    width: 100,
+    minWidth: 100,
     height: '100%',
+    maxWidth: 100,
   },
   content: {
     overflow: 'auto'
@@ -132,7 +130,7 @@ export default function MediaControlCard(props) {
                 {currentPlaySong.title}
               </Typography>
               <Typography variant="subtitle1" color="textSecondary" noWrap>
-                {currentPlaySong.artist && currentPlaySong.artist.map(a => a.name).join(",")}
+                {currentPlaySong.title && getSongArtists(currentPlaySong)}
               </Typography>
             </CardContent>
           </div>

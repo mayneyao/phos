@@ -37,7 +37,7 @@ const shuffleArray = (arr) => {
 const useStyles = makeStyles(theme => ({
   card: {
     display: 'flex',
-    position: 'absolute',
+    position: 'fixed',
     bottom: 0,
     width: '100%'
   },

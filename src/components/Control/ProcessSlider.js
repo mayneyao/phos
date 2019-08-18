@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
             width: '100%',
         },
         [theme.breakpoints.up('sm')]: {
-            width: '80%',
+            width: '100%',
         },
         margin: '0 10px',
         position: 'relative'

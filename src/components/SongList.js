@@ -39,14 +39,15 @@ function Row(props) {
     const { state, dispatch } = React.useContext(PhosPlayerContext)
     const { data, index, style } = props;
     let song = data[index]
-    let artists = song.artist.map(a => a.name).join(",")
+    let artists = song.artist ? song.artist.filter(i => !!i).map(a => a.name).join(",") : '未知'
+    let album = song.album ? song.album[0].name : '未知'
     const classes = useStyles();
 
     const { currentPlaySong } = state
     const getRowClass = () => {
         if (song.title === currentPlaySong.title) {
             return classes.nowPlayingSong
-        } else if (!song.file) {
+        } else if (!song.file && !song.id_163) {
             return classes.noSourceSong
         }
     }
@@ -61,12 +62,12 @@ function Row(props) {
             <Hidden xsDown>
                 <ListItemText primary={`${song.title}`} className={classes.col} />
                 <ListItemText primary={`${artists}`} className={classes.col} />
-                <ListItemText primary={`${song.album[0].name}`} className={classes.col} />
+                <ListItemText primary={`${album}`} className={classes.col} />
             </Hidden>
             <Hidden smUp>
                 <ListItemText
                     primary={`${song.title}`}
-                    secondary={`${artists} - ${song.album[0].name}`}
+                    secondary={`${artists} - ${album}`}
                 />
             </Hidden>
 
@@ -105,7 +106,7 @@ export default function VirtualizedList() {
             </Hidden>
 
             <FixedSizeList
-                height={500}
+                height={700}
                 width='100%'
                 itemSize={matches ? 60 : 46}
                 itemCount={songlist.length}

@@ -42,7 +42,7 @@ function getSongSourceFileAndArtists(song) {
         songSourceFile = `${NOTION_BASE}/signed/${encodeURIComponent(song.file[0]).replace("s3.us-west", "s3-us-west")}`
     } else if (song.id_163) {
         // 163 music source
-        songSourceFile = `http://music.163.com/song/media/outer/url?id=${song.id_163}.mp3`
+        songSourceFile = `https://music.163.com/song/media/outer/url?id=${song.id_163}.mp3`
     }
     let artists = `${song.artist && song.artist.length ? song.artist.filter(i => !!i).map(a => a.name).join(",") : '未知'}`
 

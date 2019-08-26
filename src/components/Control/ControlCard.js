@@ -104,8 +104,8 @@ export default function MediaControlCard(props) {
   let _currentPlaylist = currentPlaylist
 
   const getCover = () => {
-    if (currentPlaySong && currentPlaySong.title && currentPlaySong.album && currentPlaySong.album[0] && currentPlaySong.album[0].cover) {
-      return parseImageUrl(currentPlaySong.album[0].cover[0], 80)
+    if (currentPlaySong && currentPlaySong.title && currentPlaySong.album && currentPlaySong.album[0] && (currentPlaySong.album[0].cover || currentPlaySong.album[0].cover_163)) {
+      return parseImageUrl(currentPlaySong.album[0].cover[0] || currentPlaySong.album[0].cover_163, 80)
     } else {
       return 'https://upload.wikimedia.org/wikipedia/commons/e/ec/Record-Album-02.jpg'
     }

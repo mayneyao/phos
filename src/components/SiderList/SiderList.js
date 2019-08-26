@@ -7,6 +7,10 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Slide from '@material-ui/core/Slide';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+import InfoIcon from '@material-ui/icons/Info';
+
 
 // 下面三个列表代码高度相似，后续抽象成一个通用组件。
 import Playlist from './Playlist'
@@ -65,6 +69,15 @@ const useStyles = makeStyles(theme => ({
     searchIcon: {
         marginRight: '-20px'
     },
+    selectNavItem: {
+        color: theme.palette.primary.main
+    },
+    infoIcon: {
+        color: '#eee',
+        '$:hover': {
+            cursor: 'pointer'
+        }
+    }
 }));
 
 export default function SimpleTabs() {
@@ -80,12 +93,39 @@ export default function SimpleTabs() {
     }
 
     function submitSearch() {
-        dispatch({
-            type: 'set',
-            payload: {
-                searchWord: q,
+        if (/^[ap][rl][:：]/.test(q) && !q.startsWith('pr')) {
+            // 高级搜索
+            let sType = q.slice(0, 2)
+            let sWord = q.slice(3)
+            switch (sType) {
+                case 'pl':
+                    setValue(0)
+                    break
+                case 'ar':
+                    setValue(1)
+                    break
+                case 'al':
+                    setValue(2)
+                    break
             }
-        })
+
+
+            dispatch({
+                type: 'set',
+                payload: {
+                    searchWord: sWord,
+                    searchType: sType
+                }
+            })
+        } else {
+            dispatch({
+                type: 'set',
+                payload: {
+                    searchWord: q,
+                    searchType: 'so'
+                }
+            })
+        }
     }
     function showSeachInput() {
         if (showInput) {
@@ -93,6 +133,7 @@ export default function SimpleTabs() {
                 type: 'set',
                 payload: {
                     searchWord: undefined,
+                    searchType: 'so'
                 }
             })
         }
@@ -128,9 +169,9 @@ export default function SimpleTabs() {
         <div className={classes.root}>
 
             <div className={classes.nav}>
-                <span className={classes.navItem} onClick={() => handleChange(0)}> 歌单 </span>
-                <span className={classes.navItem} onClick={() => handleChange(1)}> 艺人 </span>
-                <span className={classes.navItem} onClick={() => handleChange(2)}> 专辑 </span>
+                <span className={`${classes.navItem} ${value === 0 ? classes.selectNavItem : ''}`} onClick={() => handleChange(0)}> 歌单 </span>
+                <span className={`${classes.navItem} ${value === 1 ? classes.selectNavItem : ''}`} onClick={() => handleChange(1)}> 艺人 </span>
+                <span className={`${classes.navItem} ${value === 2 ? classes.selectNavItem : ''}`} onClick={() => handleChange(2)}> 专辑 </span>
                 <SearchIcon className={`${classes.navItem} ${classes.searchIcon}`} onClick={showSeachInput} />
                 <Slide
                     direction="down"
@@ -147,6 +188,18 @@ export default function SimpleTabs() {
                                 submitSearch()
                             }
                         }}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <Tooltip title={<div>
+                                    <div>默认搜索歌曲名称,添加前缀可以使用高级搜索</div>
+                                    <div>pl:歌单名</div>
+                                    <div>ar:艺人名</div>
+                                    <div>al:专辑名</div>
+                                </div>}>
+                                    <InfoIcon className={classes.infoIcon} />
+                                </Tooltip>
+                            </InputAdornment>
+                        }
                     />
                 </Slide>
 

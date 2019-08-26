@@ -18,13 +18,11 @@ import RepeatOneIcon from '@material-ui/icons/RepeatOne';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 
 
-import Notabase from 'notabase'
+import { parseImageUrl } from 'notabase/src/utils'
 import VolumeCard from './VolumeCard'
 import { PhosPlayerContext } from '../PhosPlayerContext'
 import ProcessSlider from './ProcessSlider'
 import { getSongArtists } from '../utils'
-
-let nb = new Notabase()
 
 const shuffleArray = (arr) => {
   let i = arr.length;
@@ -107,7 +105,7 @@ export default function MediaControlCard(props) {
 
   const getCover = () => {
     if (currentPlaySong && currentPlaySong.title && currentPlaySong.album && currentPlaySong.album[0] && currentPlaySong.album[0].cover) {
-      return nb.parseImageUrl(currentPlaySong.album[0].cover[0], 80)
+      return parseImageUrl(currentPlaySong.album[0].cover[0], 80)
     } else {
       return 'https://upload.wikimedia.org/wikipedia/commons/e/ec/Record-Album-02.jpg'
     }

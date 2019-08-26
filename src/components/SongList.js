@@ -9,6 +9,10 @@ import Hidden from '@material-ui/core/Hidden';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import logo163 from '../static/logo163.jpg'
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -51,6 +55,19 @@ function Row(props) {
     let artists = song.artist ? song.artist.filter(i => !!i).map(a => a.name).join(",") : '未知'
     let album = song.album ? song.album[0].name : '未知'
     const classes = useStyles();
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    function handleRightClick(event) {
+        event.preventDefault()
+
+        setAnchorEl(event.currentTarget);
+    }
+
+    function handleClose() {
+        setAnchorEl(null);
+    }
+
+
 
     const { currentPlaySong } = state
     const getRowClass = () => {
@@ -67,7 +84,21 @@ function Row(props) {
                 type: 'playOneSong',
                 payload: { song }
             })}
+            onContextMenu={handleRightClick}
         >
+            {/* <ClickAwayListener onClickAway={handleClose}>
+                <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                >
+                    <MenuItem onClick={handleClose}>Profile</MenuItem>
+                    <MenuItem onClick={handleClose}>My account</MenuItem>
+                    <MenuItem onClick={handleClose}>Logout</MenuItem>
+                </Menu>
+            </ClickAwayListener> */}
             <Hidden xsDown>
                 <ListItemText primary={<span>{!song.file && song.id_163 && <img src={logo163} className={classes.logo163} />}{song.title}</span>} className={classes.col} />
                 <ListItemText primary={`${artists}`} className={classes.col} />
@@ -75,7 +106,7 @@ function Row(props) {
             </Hidden>
             <Hidden smUp>
                 <ListItemText
-                    primary={`${song.title}`}
+                    primary={<span>{!song.file && song.id_163 && <img src={logo163} className={classes.logo163} />}{song.title}</span>}
                     secondary={`${artists} - ${album}`}
                 />
             </Hidden>

@@ -60,7 +60,8 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     // maxWidth: 1200,
     // backgroundColor: theme.palette.background.paper,
-    margin: '0 auto'
+    margin: '0 auto',
+    marginBottom: 50
   },
   setting: {
     position: 'absolute',
@@ -112,11 +113,12 @@ function PhosPlayer() {
         phosConfigURL = localStorage.getItem("phosConfigURL")
       }
       if (phosConfigURL) {
-        let config = await nb._fetch(phosConfigURL)
-        let db = await nb.fetch({
-          songs: config.rows.find(i => i.name === "songs").url[0][1][0][1],
-          albums: config.rows.find(i => i.name === "albums").url[0][1][0][1],
-          artists: config.rows.find(i => i.name === "artists").url[0][1][0][1],
+        let config = await nb.fetch(phosConfigURL)
+        console.log(config, nb)
+        let db = await nb.fetchAll({
+          songs: config.rows.find(i => i.name === "songs")._raw.properties[config.propsKeyMap['url'].key][0][1][0][1],
+          albums: config.rows.find(i => i.name === "albums")._raw.properties[config.propsKeyMap['url'].key][0][1][0][1],
+          artists: config.rows.find(i => i.name === "artists")._raw.properties[config.propsKeyMap['url'].key][0][1][0][1],
         })
 
         dispatch({

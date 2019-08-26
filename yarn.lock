@@ -6695,10 +6695,10 @@ normalize-url@^3.0.0:
   resolved "https://registry.npm.taobao.org/normalize-url/download/normalize-url-3.3.0.tgz#b2e1c4dc4f7c6d57743df733a4f5978d18650559"
   integrity sha1-suHE3E98bVd0PfczpPWXjRhlBVk=
 
-notabase@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/notabase/-/notabase-0.5.2.tgz#bdc37c2c56b63cbadc657f008e5b545726c65f40"
-  integrity sha512-395ZNvYxRGdv1xNaHeZ7tOaz9fh813RTbeDMjtfKNoFhBXAK3Q02+imTZ9FJyI6qnPFjFBfUp4IdojwZfMBjmw==
+notabase@^0.6.4:
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/notabase/-/notabase-0.6.4.tgz#e27b9b05fabf4bc4793247a36233962ec3025e3e"
+  integrity sha512-KYXVipqXur2c8cCpH6l+/AbFgBrz7l2o03VlIG/5b2Y+fBYfDksv/PCuxX/juWVyb9jzrfhNmuqaV+USdlKXNg==
   dependencies:
     axios "^0.19.0"
     dayjs "^1.8.15"

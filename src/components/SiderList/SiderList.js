@@ -10,6 +10,7 @@ import Slide from '@material-ui/core/Slide';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
+import Hidden from '@material-ui/core/Hidden';
 
 
 // 下面三个列表代码高度相似，后续抽象成一个通用组件。
@@ -57,7 +58,10 @@ const useStyles = makeStyles(theme => ({
     },
     nav: {
         display: 'flex',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        [theme.breakpoints.down('sm')]: {
+            justifyContent: 'right',
+        },
     },
     navItem: {
         padding: 10,
@@ -67,7 +71,10 @@ const useStyles = makeStyles(theme => ({
         }
     },
     searchIcon: {
-        marginRight: '-20px'
+        marginRight: '-20px',
+        [theme.breakpoints.down('sm')]: {
+            marginRight: 0,
+        },
     },
     selectNavItem: {
         color: theme.palette.primary.main
@@ -97,6 +104,11 @@ export default function SimpleTabs() {
             // 高级搜索
             let sType = q.slice(0, 2)
             let sWord = q.slice(3)
+            const typeMap = {
+                'pl': 'playlistName',
+                'ar': 'artistName',
+                'al': 'albumName',
+            }
             switch (sType) {
                 case 'pl':
                     setValue(0)
@@ -114,7 +126,9 @@ export default function SimpleTabs() {
                 type: 'set',
                 payload: {
                     searchWord: sWord,
-                    searchType: sType
+                    searchType: sType,
+                    // filterBy: typeMap[sType],
+                    // [typeMap[sType]]: sWord
                 }
             })
         } else {
@@ -169,9 +183,15 @@ export default function SimpleTabs() {
         <div className={classes.root}>
 
             <div className={classes.nav}>
-                <span className={`${classes.navItem} ${value === 0 ? classes.selectNavItem : ''}`} onClick={() => handleChange(0)}> 歌单 </span>
-                <span className={`${classes.navItem} ${value === 1 ? classes.selectNavItem : ''}`} onClick={() => handleChange(1)}> 艺人 </span>
-                <span className={`${classes.navItem} ${value === 2 ? classes.selectNavItem : ''}`} onClick={() => handleChange(2)}> 专辑 </span>
+                <Hidden xsDown>
+                    <span className={`${classes.navItem} ${value === 0 ? classes.selectNavItem : ''}`} onClick={() => handleChange(0)}> 歌单 </span>
+                </Hidden>
+                <Hidden xsDown>
+                    <span className={`${classes.navItem} ${value === 1 ? classes.selectNavItem : ''}`} onClick={() => handleChange(1)}> 艺人 </span>
+                </Hidden>
+                <Hidden xsDown>
+                    <span className={`${classes.navItem} ${value === 2 ? classes.selectNavItem : ''}`} onClick={() => handleChange(2)}> 专辑 </span>
+                </Hidden>
                 <SearchIcon className={`${classes.navItem} ${classes.searchIcon}`} onClick={showSeachInput} />
                 <Slide
                     direction="down"

@@ -60,7 +60,8 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     // maxWidth: 1200,
     // backgroundColor: theme.palette.background.paper,
-    margin: '0 auto'
+    margin: '0 auto',
+    marginBottom: 50
   },
   setting: {
     position: 'absolute',

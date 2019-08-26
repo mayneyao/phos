@@ -91,7 +91,7 @@ export default function VirtualizedList() {
                         <ListItemText primary={`全部专辑`} className={classes.col} />
                     </ListItem>
                     <FixedSizeList
-                        height={500}
+                        height={700}
                         width='100%'
                         itemSize={46}
                         itemCount={albums.length}

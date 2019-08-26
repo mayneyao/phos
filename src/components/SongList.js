@@ -100,6 +100,7 @@ export default function VirtualizedList() {
 
     if (songlist) {
         // 首先基于歌单艺人和专辑过滤歌曲
+        // 非移动端点击歌单艺人和专辑时，名称精确匹配
         switch (filterBy) {
             case 'playlistName':
                 if (playlistName) songlist = songlist.filter(item => item.playlist && item.playlist.includes(playlistName))
@@ -111,9 +112,25 @@ export default function VirtualizedList() {
                 if (albumName) songlist = songlist.filter(item => item.album && item.album.filter(i => i).map(a => a.name).includes(albumName))
                 break
         }
+
         // 如果存在搜索词，则再次过滤
-        if (searchWord && searchType === 'so') {
-            songlist = songlist.filter(item => item.title.includes(searchWord))
+        // 模糊名称匹配
+        if (searchWord) {
+            switch (searchType) {
+                case 'so':
+                    songlist = songlist.filter(item => item.title.includes(searchWord))
+                    break
+                case 'pl':
+                    songlist = songlist.filter(item => item.playlist && item.playlist.join("").includes(searchWord))
+                    break
+                case 'ar':
+                    songlist = songlist.filter(item => item.artist && item.artist.filter(i => i).map(a => a.name).join("").includes(searchWord))
+                    break
+                case 'al':
+                    songlist = songlist.filter(item => item.album && item.album.filter(i => i).map(a => a.name).join("").includes(searchWord))
+                    break
+            }
+
         }
     }
 

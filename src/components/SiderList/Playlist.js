@@ -117,7 +117,7 @@ export default function VirtualizedList() {
                         <ListItemText primary={`全部歌曲`} className={classes.col} />
                     </ListItem>
                     <FixedSizeList
-                        height={500}
+                        height={700}
                         width='100%'
                         itemSize={46}
                         itemCount={playlists.length}
@@ -127,7 +127,7 @@ export default function VirtualizedList() {
                     </FixedSizeList>
                 </div>
             </Hidden>
-            <Hidden smUp>
+            {/* <Hidden smUp>
                 <div>
                     <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                         {playlistName || '全部歌曲'}
@@ -146,7 +146,7 @@ export default function VirtualizedList() {
                     </Menu>
                 </div>
 
-            </Hidden>
+            </Hidden> */}
         </div>
     )
 }

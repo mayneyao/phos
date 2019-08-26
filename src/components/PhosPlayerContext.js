@@ -10,7 +10,13 @@ const initState = {
     data: {}, // 音乐数据 
     currentPlaySong: {}, // 当前播放的音乐
     currentPlaylist: [], // 不会被存储的当前播放列表
-    playlistName: undefined, // 默认为空，显示全部
+
+    // 下面字段会影响歌曲列表的显示。filter
+    playlistName: undefined, // 默认为空，显示全部歌曲
+    artistName: undefined, // 默认为空，显示全部歌手的歌曲
+    albumName: undefined, // 默认为空，显示全部专辑的歌曲
+    filterBy: undefined, // 默认为空，不会过滤歌曲
+    searchWord: undefined, // 默认为空，不会过滤歌曲
 
 
     // player
@@ -120,7 +126,26 @@ function phosReducer(state, action) {
         case 'setPlaylistName':
             return {
                 ...state,
-                playlistName: action.payload.playlistName
+                playlistName: action.payload.playlistName,
+                filterBy: 'playlistName'
+            }
+        case 'setArtistName':
+            return {
+                ...state,
+                artistName: action.payload.artistName,
+                filterBy: 'artistName'
+            }
+        case 'setAlbumName':
+            return {
+                ...state,
+                albumName: action.payload.albumName,
+                filterBy: 'albumName'
+            }
+        case 'set':
+            // 更新任意状态
+            return {
+                ...state,
+                ...action.payload
             }
         case 'setPlayerConfig':
             // 配置基础 player 参数

@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { FixedSizeList } from 'react-window';
-import { PhosPlayerContext } from './PhosPlayerContext'
+import { PhosPlayerContext } from '../PhosPlayerContext'
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -96,9 +96,9 @@ export default function VirtualizedList() {
         <div>
             <Hidden xsDown>
                 <div className={classes.root}>
-                    <ListItem>
+                    {/* <ListItem>
                         <ListItemText secondary={`歌单`} className={classes.col} />
-                    </ListItem>
+                    </ListItem> */}
                     <ListItem button
                         className={!playlistName ? classes.selected : ''}
                         onClick={

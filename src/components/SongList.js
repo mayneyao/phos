@@ -8,7 +8,7 @@ import { PhosPlayerContext } from './PhosPlayerContext'
 import Hidden from '@material-ui/core/Hidden';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
-
+import Search from './Search'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -82,7 +82,7 @@ Row.propTypes = {
 
 export default function VirtualizedList() {
     const { state, dispatch } = React.useContext(PhosPlayerContext)
-    const { data, playlistName } = state
+    const { data, playlistName, artistName, albumName, filterBy, searchWord } = state
     const classes = useStyles();
     let songlist = data.songs ? data.songs.rows : []
 
@@ -90,10 +90,24 @@ export default function VirtualizedList() {
     const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
     if (songlist) {
-        if (playlistName) {
-            songlist = songlist.filter(item => item.playlist && item.playlist.includes(playlistName))
+        // 首先基于歌单艺人和专辑过滤歌曲
+        switch (filterBy) {
+            case 'playlistName':
+                if (playlistName) songlist = songlist.filter(item => item.playlist && item.playlist.includes(playlistName))
+                break
+            case 'artistName':
+                if (artistName) songlist = songlist.filter(item => item.artist && item.artist.map(a => a.name).includes(artistName))
+                break
+            case 'albumName':
+                if (albumName) songlist = songlist.filter(item => item.album && item.album.map(a => a.name).includes(albumName))
+                break
+        }
+        // 如果存在搜索词，则再次过滤
+        if (searchWord) {
+            songlist = songlist.filter(item => item.title.includes(searchWord))
         }
     }
+
 
     return (
         <>

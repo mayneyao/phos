@@ -41,6 +41,9 @@ export default function FormDialog() {
                 fullWidth
             >
                 <DialogContent>
+                    <DialogContentText>
+                        新版添加搜索功能，移动端暂未适配！
+                </DialogContentText>
                     <h3>基础配置(访问公开数据)</h3>
                     <TextField
                         margin="dense"

@@ -1,7 +1,9 @@
 import React from 'react';
 import './App.css';
 import SongList from './components/SongList'
-import Playlist from './components/Playlist'
+// import Playlist from './components/Playlist'yarn s
+import Playlist from './components/SiderList/SiderList'
+
 import Notabase from 'notabase'
 import BasePlayer from './components/BasePlayer'
 import Settings from './components/Settings'
@@ -152,7 +154,6 @@ function PhosPlayer() {
             <div className={classes.listTitleWrapper}>
               <Playlist />
             </div>
-
             <Hidden smUp>
               <SettingsIcon aria-label="edit" className={classes.setting} onClick={
                 () => {

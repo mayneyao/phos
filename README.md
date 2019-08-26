@@ -1,5 +1,6 @@
 # Phos
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9a44cb22-69a9-4348-a6ec-80ab49dc46f4/deploy-status)](https://app.netlify.com/sites/phos-music/deploys)
 PWA Music Player
 ![](https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F24198614-499c-4e18-9528-f8e59e2c02f4%2FXnip2019-08-14_02-39-58.png?table=block&id=8222a684-8e35-42e2-bfae-e53a1fbe3607&width=3840&cache=v2)
 

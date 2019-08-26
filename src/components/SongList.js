@@ -96,10 +96,10 @@ export default function VirtualizedList() {
                 if (playlistName) songlist = songlist.filter(item => item.playlist && item.playlist.includes(playlistName))
                 break
             case 'artistName':
-                if (artistName) songlist = songlist.filter(item => item.artist && item.artist.map(a => a.name).includes(artistName))
+                if (artistName) songlist = songlist.filter(item => item.artist && item.artist.filter(i => i).map(a => a.name).includes(artistName))
                 break
             case 'albumName':
-                if (albumName) songlist = songlist.filter(item => item.album && item.album.map(a => a.name).includes(albumName))
+                if (albumName) songlist = songlist.filter(item => item.album && item.album.filter(i => i).map(a => a.name).includes(albumName))
                 break
         }
         // 如果存在搜索词，则再次过滤

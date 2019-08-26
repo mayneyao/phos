@@ -53,7 +53,14 @@ function Row(props) {
     const { data, index, style } = props;
     let song = data[index]
     let artists = song.artist ? song.artist.filter(i => !!i).map(a => a.name).join(",") : '未知'
-    let album = song.album ? song.album[0].name : '未知'
+
+    let album
+    try {
+        album = song.album ? song.album[0] ? song.album[0].name : '未知' : '未知'
+    } catch (error) {
+        console.log(song.album)
+    }
+
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
 

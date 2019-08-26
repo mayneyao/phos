@@ -8,7 +8,6 @@ import InputBase from '@material-ui/core/InputBase';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Slide from '@material-ui/core/Slide';
 import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
 import Hidden from '@material-ui/core/Hidden';
 
@@ -18,7 +17,6 @@ import Playlist from './Playlist'
 import ArtistList from './ArtistList'
 import AlbumList from './AlbumList'
 
-import Search from '../Search'
 import { PhosPlayerContext } from '../PhosPlayerContext'
 
 function TabPanel(props) {
@@ -44,12 +42,6 @@ TabPanel.propTypes = {
     value: PropTypes.any.isRequired,
 };
 
-function a11yProps(index) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -209,16 +201,18 @@ export default function SimpleTabs() {
                             }
                         }}
                         endAdornment={
-                            <InputAdornment position="end">
-                                <Tooltip title={<div>
-                                    <div>默认搜索歌曲名称,添加前缀可以使用高级搜索</div>
-                                    <div>pl:歌单名</div>
-                                    <div>ar:艺人名</div>
-                                    <div>al:专辑名</div>
-                                </div>}>
-                                    <InfoIcon className={classes.infoIcon} />
-                                </Tooltip>
-                            </InputAdornment>
+                            <Hidden smDown>
+                                <InputAdornment position="end">
+                                    <Tooltip title={<div>
+                                        <div>默认搜索歌曲名称,添加前缀可以使用高级搜索</div>
+                                        <div>pl:歌单名</div>
+                                        <div>ar:艺人名</div>
+                                        <div>al:专辑名</div>
+                                    </div>}>
+                                        <InfoIcon className={classes.infoIcon} />
+                                    </Tooltip>
+                                </InputAdornment>
+                            </Hidden>
                         }
                     />
                 </Slide>

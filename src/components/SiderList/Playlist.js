@@ -61,7 +61,7 @@ export default function VirtualizedList() {
 
     // > sm menu
     const { state, dispatch } = React.useContext(PhosPlayerContext)
-    const { data, playlistName } = state
+    const { data, playlistName, searchType, searchWord } = state
     const classes = useStyles();
     let songTableSchema = data.songs ? data.songs.schema : []
     let playlists = []
@@ -74,6 +74,9 @@ export default function VirtualizedList() {
         playlists = playlistRawData.options
     }
 
+    if (searchType === 'pl') {
+        playlists = playlists.filter(s => s && s.value.includes(searchWord))
+    }
 
     // < sm menu
     const [anchorEl, setAnchorEl] = React.useState(null);

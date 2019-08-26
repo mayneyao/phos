@@ -59,9 +59,13 @@ Row.propTypes = {
 
 export default function VirtualizedList() {
     const { state, dispatch } = React.useContext(PhosPlayerContext)
-    const { data, artistName } = state
+    const { data, artistName, searchWord, searchType } = state
     const classes = useStyles();
     let artists = data.artists && data.artists.rows || []
+
+    if (searchType === 'ar') {
+        artists = artists.filter(s => s && s.name.includes(searchWord))
+    }
     return (
         <div>
             <Hidden xsDown>

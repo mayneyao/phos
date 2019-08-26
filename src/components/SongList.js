@@ -8,7 +8,7 @@ import { PhosPlayerContext } from './PhosPlayerContext'
 import Hidden from '@material-ui/core/Hidden';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
-import Search from './Search'
+import logo163 from '../static/logo163.jpg'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -32,8 +32,17 @@ const useStyles = makeStyles(theme => ({
 
     nowPlayingSong: {
         color: theme.palette.primary.main
+    },
+    logo163: {
+        marginBottom: -2,
+        marginRight: 5,
+        width: 16,
+        height: 16
+
     }
 }));
+
+
 
 function Row(props) {
     const { state, dispatch } = React.useContext(PhosPlayerContext)
@@ -60,7 +69,7 @@ function Row(props) {
             })}
         >
             <Hidden xsDown>
-                <ListItemText primary={`${song.title}`} className={classes.col} />
+                <ListItemText primary={<span>{!song.file && song.id_163 && <img src={logo163} className={classes.logo163} />}{song.title}</span>} className={classes.col} />
                 <ListItemText primary={`${artists}`} className={classes.col} />
                 <ListItemText primary={`${album}`} className={classes.col} />
             </Hidden>
@@ -82,7 +91,7 @@ Row.propTypes = {
 
 export default function VirtualizedList() {
     const { state, dispatch } = React.useContext(PhosPlayerContext)
-    const { data, playlistName, artistName, albumName, filterBy, searchWord } = state
+    const { data, playlistName, artistName, albumName, filterBy, searchWord, searchType } = state
     const classes = useStyles();
     let songlist = data.songs ? data.songs.rows : []
 
@@ -103,7 +112,7 @@ export default function VirtualizedList() {
                 break
         }
         // 如果存在搜索词，则再次过滤
-        if (searchWord) {
+        if (searchWord && searchType === 'so') {
             songlist = songlist.filter(item => item.title.includes(searchWord))
         }
     }

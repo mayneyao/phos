@@ -61,9 +61,14 @@ export default function VirtualizedList() {
 
     // > sm menu
     const { state, dispatch } = React.useContext(PhosPlayerContext)
-    const { data, albumName } = state
+    const { data, albumName, searchWord, searchType } = state
     const classes = useStyles();
     let albums = data.albums && data.albums.rows || []
+
+    if (searchType === 'al') {
+        albums = albums.filter(s => s.name.includes(searchWord))
+    }
+
     return (
         <div>
             <Hidden xsDown>
@@ -83,7 +88,7 @@ export default function VirtualizedList() {
                                 })
                             }
                         }>
-                        <ListItemText primary={`全部艺人`} className={classes.col} />
+                        <ListItemText primary={`全部专辑`} className={classes.col} />
                     </ListItem>
                     <FixedSizeList
                         height={500}

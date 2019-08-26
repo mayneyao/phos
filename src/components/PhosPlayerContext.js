@@ -16,8 +16,9 @@ const initState = {
     artistName: undefined, // 默认为空，显示全部歌手的歌曲
     albumName: undefined, // 默认为空，显示全部专辑的歌曲
     filterBy: undefined, // 默认为空，不会过滤歌曲
-    searchWord: undefined, // 默认为空，不会过滤歌曲
 
+    searchWord: undefined, // 默认为空，不会过滤歌曲
+    searchType: 'so', // 默认为常规搜索 [so,pl,ar,al] 歌曲（常规）/歌单/艺人/专辑
 
     // player
     url: '', // 

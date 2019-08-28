@@ -10,12 +10,14 @@ const initState = {
     data: {}, // 音乐数据 
     currentPlaySong: {}, // 当前播放的音乐
     currentPlaylist: [], // 不会被存储的当前播放列表
+    allPlaylist: [], // 所有的播放列表
 
     // 下面字段会影响歌曲列表的显示。filter
     playlistName: undefined, // 默认为空，显示全部歌曲
     artistName: undefined, // 默认为空，显示全部歌手的歌曲
     albumName: undefined, // 默认为空，显示全部专辑的歌曲
     filterBy: undefined, // 默认为空，不会过滤歌曲
+    showNowPlaylist: false, // 是否显示当前播放列表
 
     searchWord: undefined, // 默认为空，不会过滤歌曲
     searchType: 'so', // 默认为常规搜索 [so,pl,ar,al] 歌曲（常规）/歌单/艺人/专辑
@@ -40,6 +42,23 @@ const initState = {
 }
 
 
+
+const getPlaylist = (songs) => {
+    let songTableSchema = songs ? songs.schema : []
+    let playlists = []
+    let playlistRawData = Object.entries(songTableSchema).map(i => {
+        let [key, item] = i
+        return item
+    }).find(item => item.name === "playlist" && item.type === "multi_select")
+
+    if (playlistRawData) {
+        playlists = playlistRawData.options
+    }
+    return playlists.map(p => p.value)
+}
+
+
+
 // reducer
 
 function getSongSourceFileAndArtists(song) {
@@ -57,12 +76,13 @@ function getSongSourceFileAndArtists(song) {
 }
 
 function phosReducer(state, action) {
-    const { currentPlaySong, currentPlaylist } = state
+    const { currentPlaySong, currentPlaylist, showNowPlaylist } = state
     switch (action.type) {
         case 'loadData':
             return {
                 ...state,
-                data: action.payload.data
+                data: action.payload.data,
+                allPlaylist: getPlaylist(action.payload.data.songs)
             }
         case 'play':
             if (state.currentPlaySong.title) {
@@ -78,19 +98,29 @@ function phosReducer(state, action) {
                 ...state,
                 loading: !state.loading
             }
+        case 'addOneSongToCurrentPlaylist':
+            if (action.payload.song.file || action.payload.song.id_163) {
+                let _currentPlaylist = [...currentPlaylist, action.payload.song]
+                return {
+                    ...state,
+                    currentPlaylist: _currentPlaylist
+                }
+            } else {
+                return state
+            }
         case 'playOneSong':
             if (action.payload.song.file || action.payload.song.id_163) {
                 // 当前播放列表名称
                 const { playlistName } = state
-                let _currentPlaylist = []
+                let _currentPlaylist = showNowPlaylist ? currentPlaylist : [...currentPlaylist, action.payload.song]
                 let songsCanPlay = state.data.songs.rows.filter(song => !!song.file || !!song.id_163)
-                if (!playlistName) {
-                    // 全部歌曲列表 > 当前播放列表
-                    _currentPlaylist = songsCanPlay
-                } else {
-                    // 点击的歌单 > 当前播放列表
-                    _currentPlaylist = songsCanPlay.filter(song => song.playlist && song.playlist.includes(playlistName))
-                }
+                // if (!playlistName) {
+                //     // 全部歌曲列表 > 当前播放列表
+                //     _currentPlaylist = songsCanPlay
+                // } else {
+                //     // 点击的歌单 > 当前播放列表
+                //     _currentPlaylist = songsCanPlay.filter(song => song.playlist && song.playlist.includes(playlistName))
+                // }
 
 
                 let [songSourceFile, artists] = getSongSourceFileAndArtists(action.payload.song)
@@ -103,7 +133,7 @@ function phosReducer(state, action) {
                     isReady: false,
                     playing: true,
                     isBufferEnd: false,
-                    currentPlaylist: _currentPlaylist
+                    // currentPlaylist: _currentPlaylist
                 }
             } else {
                 return state
@@ -128,19 +158,22 @@ function phosReducer(state, action) {
             return {
                 ...state,
                 playlistName: action.payload.playlistName,
-                filterBy: 'playlistName'
+                filterBy: 'playlistName',
+                showNowPlaylist: false
             }
         case 'setArtistName':
             return {
                 ...state,
                 artistName: action.payload.artistName,
-                filterBy: 'artistName'
+                filterBy: 'artistName',
+                showNowPlaylist: false
             }
         case 'setAlbumName':
             return {
                 ...state,
                 albumName: action.payload.albumName,
-                filterBy: 'albumName'
+                filterBy: 'albumName',
+                showNowPlaylist: false
             }
         case 'set':
             // 更新任意状态
@@ -164,7 +197,7 @@ function phosReducer(state, action) {
             }
         case 'prev':
             //上一曲
-            if (currentPlaySong.title) {
+            if (currentPlaySong.title && currentPlaylist && currentPlaylist.length) {
                 let prevSongIndex
                 if (currentPlaylist.findIndex(i => i.title === currentPlaySong.title) === 0) {
                     prevSongIndex = currentPlaylist.length - 1
@@ -184,7 +217,7 @@ function phosReducer(state, action) {
             }
         case 'next':
             //下一曲
-            if (currentPlaySong.title) {
+            if (currentPlaySong.title && currentPlaylist && currentPlaylist.length) {
                 let nextSongIndex = (currentPlaylist.findIndex(s => s.title === currentPlaySong.title) + 1) % currentPlaylist.length
                 let nextSong = currentPlaylist[nextSongIndex]
                 let [songSourceFile, artists] = getSongSourceFileAndArtists(nextSong)

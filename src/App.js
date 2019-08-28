@@ -75,7 +75,7 @@ const useStyles = makeStyles(theme => ({
   listTitleWrapper: {
     width: '100%',
     textAlign: 'center',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       position: 'fixed',
       top: 0,
       zIndex: 10

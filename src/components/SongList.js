@@ -12,7 +12,10 @@ import logo163 from '../static/logo163.jpg'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-
+import MenuList from '@material-ui/core/MenuList';
+import Paper from '@material-ui/core/Paper';
+import Popover from '@material-ui/core/Popover';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -21,6 +24,15 @@ const useStyles = makeStyles(theme => ({
         maxWidth: 1200,
         // backgroundColor: '#eee',
         margin: '0 auto'
+    },
+    eee: {
+        color: '#999'
+    },
+    active: {
+        color: theme.palette.primary.main
+    },
+    nav: {
+        paddingLeft: 16
     },
     col: {
         width: '30%'
@@ -43,6 +55,9 @@ const useStyles = makeStyles(theme => ({
         width: 16,
         height: 16
 
+    },
+    addPlaylist: {
+        width: 100
     }
 }));
 
@@ -61,20 +76,79 @@ function Row(props) {
         console.log(song.album)
     }
 
+    const playlists = state.allPlaylist
+
+
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
 
-    function handleRightClick(event) {
-        event.preventDefault()
+    const [showPlaylist, setShowPlaylist] = React.useState(null);
 
+    const open = Boolean(anchorEl) && Boolean(showPlaylist);
+    const id = open ? 'simple-popover' : undefined;
+
+
+    function handlePlaySong(e) {
+        if (e.type === 'click' && !Boolean(anchorEl)) {
+            dispatch({
+                type: 'playOneSong',
+                payload: { song }
+            })
+        } else if (e.type === 'contextmenu') {
+            console.log('Right click');
+        }
+    }
+    function handleEnter(event) {
+        event.preventDefault()
+        setShowPlaylist(event.currentTarget);
+    }
+
+    function handleLeave(event) {
+        event.preventDefault()
+        setShowPlaylist(null);
+    }
+
+    function handleRightClick(event) {
+        console.log(song)
+        event.preventDefault()
         setAnchorEl(event.currentTarget);
     }
 
-    function handleClose() {
+    function handleClose(event) {
         setAnchorEl(null);
+        setShowPlaylist(null);
     }
 
+    function handleAddOneSongToCurrentPlaylist() {
+        dispatch({
+            type: 'addOneSongToCurrentPlaylist',
+            payload: {
+                song
+            }
+        })
+        handleClose()
+    }
+    function handleAddSongToPlaylist(p) {
+        console.log(song.playlist)
+        song.playlist = song.playlist ? [...song.playlist, p] : [p]
+        handleClose()
+    }
 
+    function handleRemoveSongFromPlaylist() {
+        song.playlist = song.playlist.filter(i => !(i == state.playlistName))
+        handleClose()
+    }
+
+    function handleRemoveSongFromCurrentPlaylist() {
+        dispatch({
+            type: 'set',
+            payload: {
+                currentPlaylist: state.currentPlaylist.filter(i => !(i.title === song.title))
+            }
+
+        })
+        handleClose()
+    }
 
     const { currentPlaySong } = state
     const getRowClass = () => {
@@ -87,25 +161,61 @@ function Row(props) {
     return (
         <ListItem button style={style} key={index}
             className={`${classes.smCol} ${getRowClass()}`}
-            onClick={() => dispatch({
-                type: 'playOneSong',
-                payload: { song }
-            })}
+            onClick={handlePlaySong}
             onContextMenu={handleRightClick}
         >
-            {/* <ClickAwayListener onClickAway={handleClose}>
-                <Menu
-                    id="simple-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
-                    <MenuItem onClick={handleClose}>Logout</MenuItem>
-                </Menu>
-            </ClickAwayListener> */}
+            <ClickAwayListener onClickAway={handleClose}>
+                <div>
+                    <Menu
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                    >
+                        {!state.showNowPlaylist && <MenuItem onClick={handleAddOneSongToCurrentPlaylist}>加入当前播放列表</MenuItem>}
+                        {
+                            !state.showNowPlaylist && state.playlistName && <MenuItem onClick={handleRemoveSongFromPlaylist}>从<span style={{ color: 'red' }}>{state.playlistName}</span>中移除此歌曲</MenuItem>
+                        }
+                        {
+                            state.showNowPlaylist && <MenuItem onClick={handleRemoveSongFromCurrentPlaylist}>从当前播放队列中移除此歌曲</MenuItem>
+                        }
+                        {/* <MenuItem
+                            aria-describedby={id}
+                            anchorEl={showPlaylist}
+                            onMouseEnter={handleEnter}
+                            // onClick={handleEnter}
+                            onMouseLeave={handleLeave}
+                        >
+                            添加到歌单
+                            <Popover
+                                id={id}
+                                open={open}
+                                anchorEl={showPlaylist}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'left',
+                                }}
+                            >
+                                <Paper id="menu-list-grow">
+                                    <MenuList>
+                                        {
+                                            song.playlist
+                                                ? playlists.filter(p => !song.playlist.includes(p)).map(p => <MenuItem onClick={() => handleAddSongToPlaylist(p)}>{p}</MenuItem>)
+                                                : playlists.map(p => <MenuItem onClick={() => handleAddSongToPlaylist(p)}>{p}</MenuItem>)
+                                        }
+                                    </MenuList>
+                                </Paper>
+                            </Popover>
+
+                        </MenuItem> */}
+                    </Menu>
+                </div>
+            </ClickAwayListener>
             <Hidden xsDown>
                 <ListItemText primary={<span>{!song.file && song.id_163 && <img src={logo163} className={classes.logo163} />}{song.title}</span>} className={classes.col} />
                 <ListItemText primary={`${artists}`} className={classes.col} />
@@ -129,52 +239,83 @@ Row.propTypes = {
 
 export default function VirtualizedList() {
     const { state, dispatch } = React.useContext(PhosPlayerContext)
-    const { data, playlistName, artistName, albumName, filterBy, searchWord, searchType } = state
+    const { data, playlistName, artistName, albumName, filterBy, searchWord, searchType, showNowPlaylist, currentPlaylist } = state
     const classes = useStyles();
     let songlist = data.songs ? data.songs.rows : []
 
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
-    if (songlist) {
-        // 首先基于歌单艺人和专辑过滤歌曲
-        // 非移动端点击歌单艺人和专辑时，名称精确匹配
-        switch (filterBy) {
-            case 'playlistName':
-                if (playlistName) songlist = songlist.filter(item => item.playlist && item.playlist.includes(playlistName))
-                break
-            case 'artistName':
-                if (artistName) songlist = songlist.filter(item => item.artist && item.artist.filter(i => i).map(a => a.name).includes(artistName))
-                break
-            case 'albumName':
-                if (albumName) songlist = songlist.filter(item => item.album && item.album.filter(i => i).map(a => a.name).includes(albumName))
-                break
-        }
 
-        // 如果存在搜索词，则再次过滤
-        // 模糊名称匹配
-        if (searchWord) {
-            switch (searchType) {
-                case 'so':
-                    songlist = songlist.filter(item => item.title.includes(searchWord))
+    function playSongs() {
+        // 播放第一首
+        dispatch({
+            type: 'playOneSong',
+            payload: {
+                song: songlist[0]
+            }
+        })
+        dispatch({
+            type: 'set',
+            payload: {
+                currentPlaylist: songlist
+            }
+        })
+    }
+
+    if (songlist) {
+        if (showNowPlaylist) {
+            // showNowPlaylist 显示当前播放列表
+            songlist = currentPlaylist
+        } else {
+            // 首先基于歌单艺人和专辑过滤歌曲
+            // 非移动端点击歌单艺人和专辑时，名称精确匹配
+            switch (filterBy) {
+                case 'playlistName':
+                    if (playlistName) songlist = songlist.filter(item => item.playlist && item.playlist.includes(playlistName))
                     break
-                case 'pl':
-                    songlist = songlist.filter(item => item.playlist && item.playlist.join("").includes(searchWord))
+                case 'artistName':
+                    if (artistName) songlist = songlist.filter(item => item.artist && item.artist.filter(i => i).map(a => a.name).includes(artistName))
                     break
-                case 'ar':
-                    songlist = songlist.filter(item => item.artist && item.artist.filter(i => i).map(a => a.name).join("").includes(searchWord))
-                    break
-                case 'al':
-                    songlist = songlist.filter(item => item.album && item.album.filter(i => i).map(a => a.name).join("").includes(searchWord))
+                case 'albumName':
+                    if (albumName) songlist = songlist.filter(item => item.album && item.album.filter(i => i).map(a => a.name).includes(albumName))
                     break
             }
 
+            // 如果存在搜索词，则再次过滤
+            // 模糊名称匹配
+            if (searchWord) {
+                switch (searchType) {
+                    case 'so':
+                        songlist = songlist.filter(item => item.title.includes(searchWord))
+                        break
+                    case 'pl':
+                        songlist = songlist.filter(item => item.playlist && item.playlist.join("").includes(searchWord))
+                        break
+                    case 'ar':
+                        songlist = songlist.filter(item => item.artist && item.artist.filter(i => i).map(a => a.name).join("").includes(searchWord))
+                        break
+                    case 'al':
+                        songlist = songlist.filter(item => item.album && item.album.filter(i => i).map(a => a.name).join("").includes(searchWord))
+                        break
+                }
+            }
         }
     }
 
 
     return (
         <>
+            <div className={classes.eee}>
+                {showNowPlaylist ? <span className={classes.nav}>播放队列</span> : <Button
+                    color="primary"
+                    onClick={playSongs}
+                >播放</Button>}
+                {!showNowPlaylist && filterBy === 'playlistName' ? playlistName && `歌单：${playlistName} 中的歌曲` : ''}
+                {!showNowPlaylist && filterBy === 'artistName' ? artistName && `艺人：${artistName} 的歌曲` : ''}
+                {!showNowPlaylist && filterBy === 'albumName' ? albumName && `专辑：${albumName} 中的歌曲` : ''}
+                {!showNowPlaylist && !playlistName && !artistName && !albumName && "全部歌曲"}
+            </div>
             <Hidden xsDown>
                 <ListItem>
                     <ListItemText secondary={`标题`} className={classes.col} />

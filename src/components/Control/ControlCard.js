@@ -9,6 +9,7 @@ import Hidden from '@material-ui/core/Hidden';
 
 // icon
 import SettingsIcon from '@material-ui/icons/Settings';
+import PlaylistPlayIcon from '@material-ui/icons/PlaylistPlayOutlined';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayIcon from '@material-ui/icons/PlayCircleOutline';
 import PauseIcon from '@material-ui/icons/Pause';
@@ -83,7 +84,13 @@ const useStyles = makeStyles(theme => ({
   volume: {
     position: 'absolute',
     top: 'calc(50% - 20px)',
-    right: '5%',
+    right: '70px',
+  },
+  currentPlaylist: {
+    position: 'absolute',
+    bottom: 'calc(50% - 8px)',
+    right: '40px',
+    color: '#aaa'
   },
   active: {
     color: theme.palette.primary.main
@@ -100,13 +107,13 @@ export default function MediaControlCard(props) {
   const classes = useStyles()
   const theme = useTheme()
   const { state, dispatch } = React.useContext(PhosPlayerContext)
-  const { playing, repeat, shuffle, currentPlaylist, currentPlaySong } = state
+  const { playing, repeat, shuffle, currentPlaylist, currentPlaySong, showNowPlaylist } = state
   let _currentPlaylist = currentPlaylist
 
   const getCover = () => {
     if (currentPlaySong && currentPlaySong.title && currentPlaySong.album && currentPlaySong.album[0] && currentPlaySong.album[0].cover) {
       return parseImageUrl(currentPlaySong.album[0].cover[0] || currentPlaySong.album[0].cover_163, 80)
-    } else if (currentPlaySong.album && currentPlaySong.album[0].cover_163) {
+    } else if (currentPlaySong.album && currentPlaySong.album[0] && currentPlaySong.album[0].cover_163) {
       return currentPlaySong.album[0].cover_163
     } else {
       return 'https://upload.wikimedia.org/wikipedia/commons/e/ec/Record-Album-02.jpg'
@@ -213,6 +220,21 @@ export default function MediaControlCard(props) {
           <div className={classes.volumeWrapper}>
             <div className={classes.volume}>
               <VolumeCard />
+            </div>
+            <div className={`${classes.currentPlaylist} ${showNowPlaylist ? classes.active : ''}`}>
+              <PlaylistPlayIcon
+                aria-label="playlist" className={classes.fab} onClick={
+                  () => {
+                    dispatch({
+                      type: 'set',
+                      payload: {
+                        showNowPlaylist: !showNowPlaylist,
+                      }
+                    })
+                  }
+                }>
+                settings
+            </PlaylistPlayIcon>
             </div>
             <div className={classes.settings}>
               <SettingsIcon aria-label="edit" className={classes.fab} onClick={

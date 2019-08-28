@@ -176,13 +176,13 @@ export default function SimpleTabs() {
 
             <div className={classes.nav}>
                 <Hidden xsDown>
-                    <span className={`${classes.navItem} ${value === 0 ? classes.selectNavItem : ''}`} onClick={() => handleChange(0)}> 歌单 </span>
+                    <span className={`${classes.navItem} ${value === 0 && !state.showNowPlaylist ? classes.selectNavItem : ''}`} onClick={() => handleChange(0)}> 歌单 </span>
                 </Hidden>
                 <Hidden xsDown>
-                    <span className={`${classes.navItem} ${value === 1 ? classes.selectNavItem : ''}`} onClick={() => handleChange(1)}> 艺人 </span>
+                    <span className={`${classes.navItem} ${value === 1 && !state.showNowPlaylist ? classes.selectNavItem : ''}`} onClick={() => handleChange(1)}> 艺人 </span>
                 </Hidden>
                 <Hidden xsDown>
-                    <span className={`${classes.navItem} ${value === 2 ? classes.selectNavItem : ''}`} onClick={() => handleChange(2)}> 专辑 </span>
+                    <span className={`${classes.navItem} ${value === 2 && !state.showNowPlaylist ? classes.selectNavItem : ''}`} onClick={() => handleChange(2)}> 专辑 </span>
                 </Hidden>
                 <SearchIcon className={`${classes.navItem} ${classes.searchIcon}`} onClick={showSeachInput} />
                 <Slide

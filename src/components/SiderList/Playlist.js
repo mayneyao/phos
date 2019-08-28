@@ -33,7 +33,7 @@ function Row(props) {
     const { playlistName } = state
     let playlist = data[index]
     const classes = useStyles();
-    const isSelected = playlist.value === playlistName
+    const isSelected = playlist.value === playlistName && !state.showNowPlaylist
     return (
         <ListItem button style={style} key={index}
             className={isSelected ? classes.selected : ''}
@@ -61,7 +61,7 @@ export default function VirtualizedList() {
 
     // > sm menu
     const { state, dispatch } = React.useContext(PhosPlayerContext)
-    const { data, playlistName, searchType, searchWord } = state
+    const { data, playlistName, searchType, searchWord, showNowPlaylist } = state
     const classes = useStyles();
     let songTableSchema = data.songs ? data.songs.schema : []
     let playlists = []
@@ -103,7 +103,7 @@ export default function VirtualizedList() {
                         <ListItemText secondary={`歌单`} className={classes.col} />
                     </ListItem> */}
                     <ListItem button
-                        className={!playlistName ? classes.selected : ''}
+                        className={!playlistName && !showNowPlaylist ? classes.selected : ''}
                         onClick={
                             () => {
                                 dispatch({

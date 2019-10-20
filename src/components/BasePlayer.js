@@ -13,6 +13,8 @@ export default function Player() {
         if (!hiddenPlayer && playingState.played > 0) {
             // 开始播放隐藏播放器
             setHiddenPlayer(true)
+        } else if (playingState.played === 0) {
+            setHiddenPlayer(false)
         }
         dispatch({
             type: 'updatePlayingState',
@@ -23,6 +25,7 @@ export default function Player() {
     }
 
     const onEnded = () => {
+        setHiddenPlayer(false)
         dispatch({
             type: 'next'
         })

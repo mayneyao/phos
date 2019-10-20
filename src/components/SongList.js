@@ -8,7 +8,9 @@ import { PhosPlayerContext } from './PhosPlayerContext'
 import Hidden from '@material-ui/core/Hidden';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
-import logo163 from '../static/logo163.jpg'
+import logo_163 from '../static/logo_163.jpg'
+import logo_notion from '../static/logo_notion.png'
+import logo_ytb from '../static/logo_ytb.png'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -49,12 +51,11 @@ const useStyles = makeStyles(theme => ({
     nowPlayingSong: {
         color: theme.palette.primary.main
     },
-    logo163: {
+    logo: {
         marginBottom: -2,
         marginRight: 5,
         width: 16,
         height: 16
-
     },
     addPlaylist: {
         width: 100
@@ -158,6 +159,25 @@ function Row(props) {
             return classes.noSourceSong
         }
     }
+
+    const getSourceLogo = () => {
+        let logo
+        switch (song.source) {
+            case "file":
+                logo = logo_notion
+                break
+            case "163":
+                logo = logo_163
+                break
+            case "ytb":
+                logo = logo_ytb
+                break
+            default:
+                logo = logo_notion
+        }
+        return logo
+    }
+    let logo = getSourceLogo()
     return (
         <ListItem button style={style} key={index}
             className={`${classes.smCol} ${getRowClass()}`}
@@ -217,13 +237,13 @@ function Row(props) {
                 </div>
             </ClickAwayListener>
             <Hidden xsDown>
-                <ListItemText primary={<span>{!song.file && song.id_163 && <img src={logo163} className={classes.logo163} />}{song.title}</span>} className={classes.col} />
+                <ListItemText primary={<span><img src={logo} className={classes.logo} />{song.title}</span>} className={classes.col} />
                 <ListItemText primary={`${artists}`} className={classes.col} />
                 <ListItemText primary={`${album}`} className={classes.col} />
             </Hidden>
             <Hidden smUp>
                 <ListItemText
-                    primary={<span>{!song.file && song.id_163 && <img src={logo163} className={classes.logo163} />}{song.title}</span>}
+                    primary={<span><img src={logo} className={classes.logo} />{song.title}</span>}
                     secondary={`${artists} - ${album}`}
                 />
             </Hidden>

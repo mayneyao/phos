@@ -51,7 +51,6 @@ const getPlaylist = (songs) => {
 
 function getSongSourceFileAndArtists(song) {
     let songSourceFile
-    console.log(song.source)
     switch (song.source) {
         case "file":
             songSourceFile = `${NOTION_BASE}/signed/${encodeURIComponent(song.file[0]).replace("s3.us-west", "s3-us-west")}`

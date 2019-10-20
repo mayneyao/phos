@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import ReactPlayer from 'react-player'
 import { PhosPlayerContext } from "./PhosPlayerContext";
 
@@ -7,8 +7,13 @@ import ControlCard from './Control/ControlCard'
 export default function Player() {
     const { state, dispatch } = React.useContext(PhosPlayerContext)
     const player = React.useRef(null);
+    const [hiddenPlayer, setHiddenPlayer] = useState(false)
     const { playing, url, volume, repeat, isBufferEnd } = state
     const onProgress = (playingState) => {
+        if (!hiddenPlayer && playingState.played > 0) {
+            // 开始播放隐藏播放器
+            setHiddenPlayer(true)
+        }
         dispatch({
             type: 'updatePlayingState',
             payload: {
@@ -45,15 +50,16 @@ export default function Player() {
     const seekTo = (seconds) => {
         player.current.seekTo(seconds)
     }
+    let showPlayer = url.startsWith("https://www.youtube.com") && !hiddenPlayer ? { display: 'block' } : { display: 'none' }
+    // console.log(showPlayer, hiddenPlayer)
     return <>
         <ReactPlayer
             ref={player}
             url={url}
             volume={volume}
             playing={playing}
-            style={{ display: 'none' }}
             onProgress={onProgress}
-            style={{ display: 'none' }}
+            style={showPlayer}
             loop={repeat === 'one'}
             progressInterval={0}
             onEnded={onEnded}

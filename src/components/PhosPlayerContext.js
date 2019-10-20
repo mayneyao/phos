@@ -44,32 +44,28 @@ const initState = {
 
 
 const getPlaylist = (songs) => {
-    let songTableSchema = songs ? songs.schema : []
-    let playlists = []
-    let playlistRawData = Object.entries(songTableSchema).map(i => {
-        let [key, item] = i
-        return item
-    }).find(item => item.name === "playlist" && item.type === "multi_select")
-
-    if (playlistRawData) {
-        playlists = playlistRawData.options
-    }
-    return playlists.map(p => p.value)
+    return songs ? songs.schema.playlist.options.map(o => o.value) : []
 }
-
-
 
 // reducer
 
 function getSongSourceFileAndArtists(song) {
     let songSourceFile
-    if (song.file) {
-        // notion source
-        songSourceFile = `${NOTION_BASE}/signed/${encodeURIComponent(song.file[0]).replace("s3.us-west", "s3-us-west")}`
-    } else if (song.id_163) {
-        // 163 music source
-        songSourceFile = `https://music.163.com/song/media/outer/url?id=${song.id_163}.mp3`
+    console.log(song.source)
+    switch (song.source) {
+        case "file":
+            songSourceFile = `${NOTION_BASE}/signed/${encodeURIComponent(song.file[0]).replace("s3.us-west", "s3-us-west")}`
+            break
+        case "163":
+            songSourceFile = song.file[0] //song.file.find(s => s.startsWith("https://music.163.com")) || `https://music.163.com/song/media/outer/url?id=${song.id_163}.mp3`
+            break
+        case "ytb":
+            songSourceFile = song.file[0]
+            break
+        default:
+            songSourceFile = undefined
     }
+
     let artists = `${song.artist && song.artist.length ? song.artist.filter(i => !!i).map(a => a.name).join(",") : '未知'}`
 
     return [songSourceFile, artists]

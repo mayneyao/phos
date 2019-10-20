@@ -63,16 +63,7 @@ export default function VirtualizedList() {
     const { state, dispatch } = React.useContext(PhosPlayerContext)
     const { data, playlistName, searchType, searchWord, showNowPlaylist } = state
     const classes = useStyles();
-    let songTableSchema = data.songs ? data.songs.schema : []
-    let playlists = []
-    let playlistRawData = Object.entries(songTableSchema).map(i => {
-        let [key, item] = i
-        return item
-    }).find(item => item.name === "playlist" && item.type === "multi_select")
-
-    if (playlistRawData) {
-        playlists = playlistRawData.options
-    }
+    let playlists = data.songs ? data.songs.schema.playlist.options : []
 
     if (searchType === 'pl') {
         playlists = playlists.filter(s => s && s.value.includes(searchWord))

@@ -85,8 +85,10 @@ const useStyles = makeStyles(theme => ({
 
 function PhosPlayer() {
   const { state, dispatch } = React.useContext(PhosPlayerContext)
-
   const { loading } = state
+  const background = localStorage.getItem("style.background")
+  const color = localStorage.getItem("style.color") || '#fff'
+
   React.useEffect(() => {
     let proxyUrl = localStorage.getItem("security.proxyUrl")
     let authCode = localStorage.getItem("security.authCode")
@@ -154,7 +156,7 @@ function PhosPlayer() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className={classes.root}>
+      <div className={classes.root} style={background ? { background: `url(${background})`, backgroundSize: 'cover', color: color } : {}}>
         {
           loading && <LinearProgress />
         }

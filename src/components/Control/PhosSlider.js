@@ -10,7 +10,7 @@ const PhosSlider = withStyles(({ palette }) => ({
     thumb: {
         height: 8,
         width: 8,
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
         border: '2px solid currentColor',
         marginTop: -2,
         // marginLeft: 0,

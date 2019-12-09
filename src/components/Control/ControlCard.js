@@ -38,7 +38,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     position: 'fixed',
     bottom: 0,
-    width: '100%'
+    width: '100%',
+    // background: 'none'
   },
   playControls: {
     [theme.breakpoints.down('sm')]: {
@@ -120,7 +121,7 @@ export default function MediaControlCard(props) {
     }
   }
   return (
-    <div>
+    <div style={{ height: 90 }}>
       <Card className={classes.card}>
         <Hidden xsDown>
           <div className={classes.songDetails}>

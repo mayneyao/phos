@@ -14,6 +14,8 @@ export default function FormDialog() {
     let [phosConfigURL, setPhosConfigURL] = React.useState(localStorage.getItem("phosConfigURL"))
     let [proxyUrl, setProxyUrl] = React.useState(localStorage.getItem("security.proxyUrl"))
     let [authCode, setAuthCode] = React.useState(localStorage.getItem("security.authCode"))
+    let [background, setBackground] = React.useState(localStorage.getItem("style.background"))
+    let [color, setColor] = React.useState(localStorage.getItem("style.color"))
 
     function handleClose() {
         dispatch({
@@ -29,6 +31,8 @@ export default function FormDialog() {
         localStorage.setItem("phosConfigURL", phosConfigURL)
         localStorage.setItem("security.proxyUrl", proxyUrl || '')
         localStorage.setItem("security.authCode", authCode || '')
+        localStorage.setItem("style.background", background || '')
+        localStorage.setItem("style.color", color || '')
         handleClose()
         // 清理分享链接，访问自己的配置
         window.location.href = window.location.origin
@@ -61,7 +65,7 @@ export default function FormDialog() {
                     <TextField
                         margin="dense"
                         id="proxy"
-                        label="cloudflare proxy-worker url"
+                        label="Cloudflare Proxy-worker URL"
                         type="url"
                         value={proxyUrl || ''}
                         onChange={(e) => setProxyUrl(e.target.value)}
@@ -74,6 +78,27 @@ export default function FormDialog() {
                         type="url"
                         value={authCode || ''}
                         onChange={(e) => setAuthCode(e.target.value)}
+                        fullWidth
+                    />
+                </DialogContent>
+                <DialogContent>
+                    <h3>风格配置</h3>
+                    <TextField
+                        margin="dense"
+                        id="background"
+                        label="Background Image URL"
+                        type="url"
+                        value={background || ''}
+                        onChange={(e) => setBackground(e.target.value)}
+                        fullWidth
+                    />
+                    <TextField
+                        margin="dense"
+                        id="color"
+                        label="Color"
+                        type="text"
+                        value={color || ''}
+                        onChange={(e) => setColor(e.target.value)}
                         fullWidth
                     />
                 </DialogContent>

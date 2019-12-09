@@ -37,8 +37,12 @@ const initState = {
     phosColor: "#38d4c9",
     playingState: {},
     openSettings: false, // 是否打开配置
-    loading: true
+    loading: true,
 
+    // player style
+    background: localStorage.getItem("style.background"),
+    color: localStorage.getItem("style.color"),
+    opacity: localStorage.getItem("style.opacity"),
 }
 
 

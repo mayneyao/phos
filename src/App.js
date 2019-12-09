@@ -85,9 +85,10 @@ const useStyles = makeStyles(theme => ({
 
 function PhosPlayer() {
   const { state, dispatch } = React.useContext(PhosPlayerContext)
-  const { loading } = state
-  const background = localStorage.getItem("style.background")
-  const color = localStorage.getItem("style.color") || '#fff'
+  const { loading, background, color, opacity } = state
+  console.log(opacity)
+  // const background = localStorage.getItem("style.background")
+  // const color = localStorage.getItem("style.color") || '#000'
 
   React.useEffect(() => {
     let proxyUrl = localStorage.getItem("security.proxyUrl")
@@ -156,7 +157,17 @@ function PhosPlayer() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className={classes.root} style={background ? { background: `url(${background})`, backgroundSize: 'cover', color: color } : {}}>
+      <div style={{
+        position: 'fixed',
+        width: '100%',
+        height: '100vh',
+        zIndex: -1,
+        // background: `rgba(0,0,0,0.5)`
+
+      }}>
+        <div style={background ? { background: `url(${background})`, backgroundSize: 'cover', opacity: opacity, height: '100vh' } : {}}></div>
+      </div>
+      <div className={classes.root} style={{ color: color }}>
         {
           loading && <LinearProgress />
         }

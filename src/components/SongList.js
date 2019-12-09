@@ -28,7 +28,6 @@ const useStyles = makeStyles(theme => ({
         margin: '0 auto'
     },
     title: {
-        color: '#999',
         height: 42
     },
     active: {

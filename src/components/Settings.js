@@ -6,6 +6,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { PhosPlayerContext } from "./PhosPlayerContext";
+import Slider from '@material-ui/core/Slider';
+
 
 export default function FormDialog() {
     const { state, dispatch } = React.useContext(PhosPlayerContext);
@@ -16,6 +18,8 @@ export default function FormDialog() {
     let [authCode, setAuthCode] = React.useState(localStorage.getItem("security.authCode"))
     let [background, setBackground] = React.useState(localStorage.getItem("style.background"))
     let [color, setColor] = React.useState(localStorage.getItem("style.color"))
+    let [opacity, setOpacity] = React.useState(localStorage.getItem("style.opacity"))
+
 
     function handleClose() {
         dispatch({
@@ -33,6 +37,7 @@ export default function FormDialog() {
         localStorage.setItem("security.authCode", authCode || '')
         localStorage.setItem("style.background", background || '')
         localStorage.setItem("style.color", color || '')
+        localStorage.setItem("style.opacity", opacity || 0.5)
         handleClose()
         // 清理分享链接，访问自己的配置
         window.location.href = window.location.origin
@@ -89,8 +94,34 @@ export default function FormDialog() {
                         label="Background Image URL"
                         type="url"
                         value={background || ''}
-                        onChange={(e) => setBackground(e.target.value)}
+                        onChange={(e) => {
+                            setBackground(e.target.value)
+                            dispatch({
+                                type: 'set',
+                                payload: {
+                                    background: e.target.value
+                                }
+                            })
+                        }}
                         fullWidth
+                    />
+                    <Slider
+                        value={opacity}
+                        aria-labelledby="discrete-slider"
+                        valueLabelDisplay="auto"
+                        step={0.1}
+                        marks
+                        min={0.0}
+                        max={1.0}
+                        onChange={(e, v) => {
+                            setOpacity(v)
+                            dispatch({
+                                type: 'set',
+                                payload: {
+                                    opacity: v
+                                }
+                            })
+                        }}
                     />
                     <TextField
                         margin="dense"
@@ -98,7 +129,15 @@ export default function FormDialog() {
                         label="Color"
                         type="text"
                         value={color || ''}
-                        onChange={(e) => setColor(e.target.value)}
+                        onChange={(e) => {
+                            setColor(e.target.value)
+                            dispatch({
+                                type: 'set',
+                                payload: {
+                                    color: e.target.value
+                                }
+                            })
+                        }}
                         fullWidth
                     />
                 </DialogContent>

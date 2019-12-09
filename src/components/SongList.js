@@ -327,6 +327,10 @@ export default function VirtualizedList() {
         }
     }
 
+    // 按创建时间排序
+    songlist = songlist.sort((a, b) => {
+        return a.created_time > b.created_time ? -1 : 0
+    })
 
     return (
         <>

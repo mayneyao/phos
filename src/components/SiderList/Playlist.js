@@ -64,6 +64,7 @@ export default function VirtualizedList() {
     const { data, playlistName, searchType, searchWord, showNowPlaylist } = state
     const classes = useStyles();
     let playlists = data.songs ? data.songs.schema.playlist.options : []
+    const height = window.innerHeight - 191 // 
 
     if (searchType === 'pl') {
         playlists = playlists.filter(s => s && s.value.includes(searchWord))
@@ -108,7 +109,7 @@ export default function VirtualizedList() {
                         <ListItemText primary={`全部歌曲`} className={classes.col} />
                     </ListItem>
                     <FixedSizeList
-                        height={700}
+                        height={height}
                         width='100%'
                         itemSize={46}
                         itemCount={playlists.length}

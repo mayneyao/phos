@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('sm')]: {
       display: 'flex',
     },
-    height: '100%'
+    height: 'calc(100vh - 90px)'
   },
   playlist: {
     [theme.breakpoints.down('sm')]: {
@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('sm')]: {
       width: '25%',
     },
-    height: '100%',
+    // height: '100%',
     // maxWidth: 400,
     // backgroundColor: theme.palette.background.paper,
     margin: '0 auto'
@@ -61,7 +61,6 @@ const useStyles = makeStyles(theme => ({
     // maxWidth: 1200,
     // backgroundColor: theme.palette.background.paper,
     margin: '0 auto',
-    marginBottom: 100,
     [theme.breakpoints.down('sm')]: {
       marginTop: 42
     }

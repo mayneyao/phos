@@ -63,6 +63,7 @@ export default function VirtualizedList() {
     const classes = useStyles();
     let artists = data.artists && data.artists.rows || []
 
+    const height = window.innerHeight - 191 // 
     if (searchType === 'ar') {
         artists = artists.filter(s => s && s.name.includes(searchWord))
     }
@@ -88,7 +89,7 @@ export default function VirtualizedList() {
                         <ListItemText primary={`全部艺人`} className={classes.col} />
                     </ListItem>
                     <FixedSizeList
-                        height={700}
+                        height={height}
                         width='100%'
                         itemSize={46}
                         itemCount={artists.length}

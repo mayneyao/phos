@@ -27,8 +27,9 @@ const useStyles = makeStyles(theme => ({
         // backgroundColor: '#eee',
         margin: '0 auto'
     },
-    eee: {
-        color: '#999'
+    title: {
+        color: '#999',
+        height: 42
     },
     active: {
         color: theme.palette.primary.main
@@ -240,6 +241,7 @@ function Row(props) {
                 <ListItemText primary={<span><img src={logo} className={classes.logo} />{song.title}</span>} className={classes.col} />
                 <ListItemText primary={`${artists}`} className={classes.col} />
                 <ListItemText primary={`${album}`} className={classes.col} />
+                <ListItemText primary={`${(new Date(song.created_time)).toLocaleString()}`} className={classes.col} />
             </Hidden>
             <Hidden smUp>
                 <ListItemText
@@ -266,6 +268,7 @@ export default function VirtualizedList() {
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
+    const height = window.innerHeight - 185
 
     function playSongs() {
         // 播放第一首
@@ -307,7 +310,8 @@ export default function VirtualizedList() {
             if (searchWord) {
                 switch (searchType) {
                     case 'so':
-                        songlist = songlist.filter(item => item.title.includes(searchWord))
+                        let reg = new RegExp(searchWord, 'i')
+                        songlist = songlist.filter(item => reg.test(item.title))
                         break
                     case 'pl':
                         songlist = songlist.filter(item => item.playlist && item.playlist.join("").includes(searchWord))
@@ -326,7 +330,7 @@ export default function VirtualizedList() {
 
     return (
         <>
-            <div className={classes.eee}>
+            <div className={classes.title}>
                 {showNowPlaylist ? <span className={classes.nav}>播放队列</span> : <Button
                     color="primary"
                     onClick={playSongs}
@@ -341,11 +345,12 @@ export default function VirtualizedList() {
                     <ListItemText secondary={`标题`} className={classes.col} />
                     <ListItemText secondary={`艺人`} className={classes.col} />
                     <ListItemText secondary={`专辑`} className={classes.col} />
+                    <ListItemText secondary={`添加时间`} className={classes.col} />
                 </ListItem>
             </Hidden>
 
             <FixedSizeList
-                height={700}
+                height={height}
                 width='100%'
                 itemSize={matches ? 60 : 46}
                 itemCount={songlist.length}

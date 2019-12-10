@@ -165,7 +165,7 @@ function PhosPlayer() {
         // background: `rgba(0,0,0,0.5)`
 
       }}>
-        <div style={background ? { background: `url(${background})`, backgroundSize: 'cover', opacity: opacity, height: '100vh' } : {}}></div>
+        <div style={background ? { background: `url(${background})`, backgroundSize: 'cover', opacity: opacity, height: '100vh', backgroundSize: 'cover' } : {}}></div>
       </div>
       <div className={classes.root} style={{ color: color }}>
         {

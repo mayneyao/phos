@@ -26,7 +26,7 @@ export default function Player() {
 
     const onEnded = () => {
         setHiddenPlayer(false)
-        const { currentPlaySong } = state
+        const { currentPlaySong, data: { history } } = state
         try {
             if (!currentPlaySong.length) {
                 currentPlaySong.length = player.current.getDuration()
@@ -35,6 +35,16 @@ export default function Player() {
         } catch (error) {
             console.log(`无法更新:${currentPlaySong.title} 歌曲时长`)
             console.log(error)
+        }
+
+        try {
+            //
+            history.addRow({
+                song: [currentPlaySong]
+            })
+            console.log(`更新听歌记录成功`)
+        } catch (error) {
+            console.log(`更新听歌记录失败`)
         }
 
         dispatch({

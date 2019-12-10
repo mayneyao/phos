@@ -128,6 +128,7 @@ function PhosPlayer() {
           songs: config.rows.find(i => i.name === "songs")._raw.properties[config.propsKeyMap['url'].key][0][1][0][1],
           albums: config.rows.find(i => i.name === "albums")._raw.properties[config.propsKeyMap['url'].key][0][1][0][1],
           artists: config.rows.find(i => i.name === "artists")._raw.properties[config.propsKeyMap['url'].key][0][1][0][1],
+          history: config.rows.find(i => i.name === "history")._raw.properties[config.propsKeyMap['url'].key][0][1][0][1],
         })
 
         dispatch({

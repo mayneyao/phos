@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import SongList from './components/SongList'
-// import Playlist from './components/Playlist'yarn s
 import SiderList from './components/SiderList/SiderList'
 
 import Notabase from 'notabase'
@@ -11,7 +10,7 @@ import Hidden from '@material-ui/core/Hidden';
 import SettingsIcon from '@material-ui/icons/Settings';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-
+import Msg from './components/Msg';
 import { PhosPlayerContext } from "./components/PhosPlayerContext";
 import { makeStyles } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -86,7 +85,7 @@ const useStyles = makeStyles(theme => ({
 function PhosPlayer() {
   const { state, dispatch } = React.useContext(PhosPlayerContext)
   const { loading, background, color, opacity } = state
-  console.log(opacity)
+  // console.log(opacity)
   // const background = localStorage.getItem("style.background")
   // const color = localStorage.getItem("style.color") || '#000'
 
@@ -199,6 +198,7 @@ function PhosPlayer() {
 
         <BasePlayer />
         <Settings />
+        <Msg />
       </div>
     </ThemeProvider>
   );

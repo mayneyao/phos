@@ -26,6 +26,17 @@ export default function Player() {
 
     const onEnded = () => {
         setHiddenPlayer(false)
+        const { currentPlaySong } = state
+        try {
+            if (!currentPlaySong.length) {
+                currentPlaySong.length = player.current.getDuration()
+                console.log(`已自动更新:${currentPlaySong.title} 歌曲时长`)
+            }
+        } catch (error) {
+            console.log(`无法更新:${currentPlaySong.title} 歌曲时长`)
+            console.log(error)
+        }
+
         dispatch({
             type: 'next'
         })
@@ -54,7 +65,6 @@ export default function Player() {
         player.current.seekTo(seconds)
     }
     let showPlayer = url.startsWith("https://www.youtube.com") && !hiddenPlayer ? { display: 'block' } : { display: 'none' }
-    // console.log(showPlayer, hiddenPlayer)
     return <>
         <ReactPlayer
             ref={player}

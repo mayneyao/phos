@@ -43,6 +43,10 @@ const initState = {
     background: localStorage.getItem("style.background"),
     color: localStorage.getItem("style.color"),
     opacity: localStorage.getItem("style.opacity"),
+
+    // msg
+    msg: '',
+    msgOpen: false
 }
 
 
@@ -77,6 +81,18 @@ function getSongSourceFileAndArtists(song) {
 function phosReducer(state, action) {
     const { currentPlaySong, currentPlaylist, showNowPlaylist } = state
     switch (action.type) {
+        case 'closeMsg':
+            return {
+                ...state,
+                msg: '',
+                msgOpen: false
+            }
+        case 'showMsg':
+            return {
+                ...state,
+                msg: action.payload.msg,
+                msgOpen: true
+            }
         case 'loadData':
             return {
                 ...state,

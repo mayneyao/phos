@@ -70,7 +70,10 @@ function getSongSourceFileAndArtists(song) {
             songSourceFile = song.file[0]
             break
         default:
-            songSourceFile = undefined
+            songSourceFile = song.file[0]
+            if (song.file[0].startsWith("https://s3")){
+              songSourceFile = `${NOTION_BASE}/signed/${encodeURIComponent(song.file[0]).replace("s3.us-west", "s3-us-west")}`
+            }
     }
 
     let artists = `${song.artist && song.artist.length ? song.artist.filter(i => !!i).map(a => a.name).join(",") : '未知'}`
@@ -246,6 +249,8 @@ function phosReducer(state, action) {
             } else {
                 return state
             }
+        default:
+          return state
     }
 }
 

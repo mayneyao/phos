@@ -6,7 +6,7 @@
     "@material-ui/core": "^4.3.1",
     "@material-ui/icons": "^4.2.1",
     "lodash": "^4.17.15",
-    "notabase": "^0.8.0",
+    "notabase": "^0.8.5",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-player": "^1.11.2",
